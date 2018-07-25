@@ -1,0 +1,33 @@
+image: node:carbon
+pipelines:
+  default:
+    - step:
+        name: Test
+        script:
+          - npm install
+          - npm run lint
+          - npm run test
+        caches:
+          - node
+    - step:
+        name: License report
+        script:
+          - npm install
+          - npm run license-report
+        caches:
+          - node
+    - step:
+        name: Build documentation
+        script:
+          - npm install
+          - npm run documentation
+        caches:
+          - node
+    - step:
+        name: Build
+        script:
+          - npm install
+          - npm run build
+        caches:
+          - node
+  
