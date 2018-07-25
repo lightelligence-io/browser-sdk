@@ -2,10 +2,10 @@
   "name": "javascript-sdk",
   "version": "0.1.0",
   "description": "javascript SDK for lightelligence platform",
-  "main": "index.js",
+  "main": "dist/bundle.web.js",
   "scripts": {
     "test": "jest --coverage",
-    "lint": "eslint src/**",
+    "lint": "eslint src/** test/**",
     "documentation": "documentation build src/** -f html -o docs",
     "build": "webpack --config webpack.config.js",
     "license-report": "legally",

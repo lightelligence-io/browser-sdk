@@ -6,6 +6,7 @@ import EnvironmentProvider from './environmentProvider';
  * Makes GET http request with access_token
  * @param {string} path - resource path
  * @param {string} [method = 'GET'] - HTTP method
+ * @param {object} [body = null] - HTTP method
  * @returns {Promise}
  */
 async function call(path, method = 'GET', body = null) {
@@ -18,11 +19,11 @@ async function call(path, method = 'GET', body = null) {
 
   return fetch(`${apiUri}${path}`, {
     method,
-    body,
+    body: body ? JSON.stringify(body) : undefined,
     headers: {
       authorization: `Bearer ${user.access_token}`,
     },
-  }).then(response => response.json());
+  }).then((response) => response.json());
 }
 
 export default {
