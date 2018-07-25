@@ -2,10 +2,11 @@ import { UserManager } from 'oidc-client';
 import UserManagerProvider from './tools/userManagerProvider';
 import EnvironmentProvider from './tools/environmentProvider';
 import Tenant from './modules/tenant';
-import Device from './modules/device';
 import Client from './modules/client';
+import Device from './modules/device';
+import DeviceType from './modules/deviceType';
 
-export { Tenant, Device, Client };
+export { Tenant, Client, Device, DeviceType };
 
 /**
  * Main browser sdk module
