@@ -3,8 +3,9 @@ import UserManagerProvider from './tools/userManagerProvider';
 import EnvironmentProvider from './tools/environmentProvider';
 import Tenant from './modules/tenant';
 import Device from './modules/device';
+import Client from './modules/client';
 
-export { Tenant, Device };
+export { Tenant, Device, Client };
 
 /**
  * Main browser sdk module
