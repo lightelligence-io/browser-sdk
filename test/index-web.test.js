@@ -1,0 +1,73 @@
+import BrowserSDK from '../src/index-web';
+import UserManagerProvider from '../src/tools/userManagerProvider';
+import EnvironmentProvider from '../src/tools/environmentProvider';
+
+describe('browser module', () => {
+  describe('constructor', () => {
+    it('throws error if constructor options are invalid', () => {
+      expect(() => new BrowserSDK()).toThrowError();
+      expect(() => new BrowserSDK({ environment: 'int' })).toThrowError();
+      expect(() => new BrowserSDK({ clientId: 'abcdefg' })).toThrowError();
+    });
+
+    it('creates user manager instance', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
+      expect(sdk.manager.settings).toBeDefined();
+    });
+
+    it('sets UserManagerProvider', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' }); // eslint-disable-line no-unused-vars
+      expect(UserManagerProvider.get()).toBeDefined();
+    });
+
+    it('sets EnvironmentProvider', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' }); // eslint-disable-line no-unused-vars
+      expect(EnvironmentProvider.get()).toBeDefined();
+    });
+  });
+
+  describe('login', () => {
+    it('calls signinRedirect method', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
+      sdk.manager.signinRedirect = jest.fn();
+      return sdk.login().then(() => {
+        expect(sdk.manager.signinRedirect.mock.calls.length).toBe(1);
+      });
+    });
+
+    it('dont call signinRedirect method when user is authorized', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
+      sdk.manager.getUser = jest.fn().mockResolvedValue({ access_token: 'abcdefg' });
+      sdk.manager.signinRedirect = jest.fn();
+      return sdk.login().then(() => {
+        expect(sdk.manager.signinRedirect.mock.calls.length).toBe(0);
+      });
+    });
+  });
+
+  describe('logout', () => {
+    it('should call signoutRedirect method', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
+      sdk.manager.signoutRedirect = jest.fn();
+      sdk.logout();
+      expect(sdk.manager.signoutRedirect.mock.calls.length).toBe(1);
+    });
+
+    it('clears UserManagerProvider', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' }); // eslint-disable-line no-unused-vars
+      sdk.logout();
+      expect(UserManagerProvider.get()).toBeUndefined();
+    });
+  });
+
+  describe('getCurrentUser', () => {
+    it('returns promise with user object', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
+      const userMock = { access_token: 'abcdefg' };
+      sdk.manager.getUser = jest.fn().mockResolvedValue(userMock);
+      return sdk.getCurrentUser().then((response) => {
+        expect(response).toEqual(userMock);
+      });
+    });
+  });
+});

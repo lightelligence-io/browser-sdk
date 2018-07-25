@@ -1,7 +1,7 @@
 const path = require('path');
 
 const baseConfig = {
-  entry: './src/index.js',
+  entry: './src/index-web.js',
   mode: 'production',
   module: {
     rules: [
@@ -29,6 +29,9 @@ const webConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.web.js',
+    library: 'olt-js-sdk',
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
   },
 };
 
