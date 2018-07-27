@@ -1,4 +1,6 @@
 const path = require('path');
+const spreadPlugin = require('babel-plugin-transform-object-rest-spread');
+const transformRuntimePlugin = require('babel-plugin-transform-runtime');
 
 const baseConfig = {
   entry: './src/index-web.js',
@@ -9,6 +11,18 @@ const baseConfig = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
+        enforce: 'pre',
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['env'],
+            plugins: [spreadPlugin, transformRuntimePlugin],
+          },
+        },
       },
     ],
   },
