@@ -11,6 +11,7 @@
     "build": "webpack --config webpack.config.js",
     "license-report": "legally",
     "precommit": "npm run lint && npm run test",
+    "prepare": "npm install",
     "postinstall": "npm run build"
   },
   "repository": {
