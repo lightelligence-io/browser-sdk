@@ -28,7 +28,8 @@
   "author": "Roman Makovyak",
   "license": "MIT",
   "homepage": "https://bitbucket.org/lightelligence/javascript-sdk#readme",
-  "devDependencies": {
+  "dependencies": {
+    "oidc-client": "^1.5.2",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.4.0",
     "babel-loader": "^7.1.5",
@@ -50,9 +51,6 @@
     "npm": "^6.2.0",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.1.0"
-  },
-  "dependencies": {
-    "oidc-client": "^1.5.2"
   },
   "jest": {
     "setupFiles": [
