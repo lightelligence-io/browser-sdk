@@ -10,7 +10,8 @@
     "documentation": "documentation build src/** -f html -o docs --theme lightelligence_theme",
     "build": "webpack --config webpack.config.js",
     "license-report": "legally",
-    "precommit": "npm run lint && npm run test"
+    "precommit": "npm run lint && npm run test",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
