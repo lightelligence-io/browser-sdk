@@ -27,7 +27,7 @@ export default class BrowserSDK {
     }
 
     this.manager = new UserManager({
-      authority: `https://api.${environment}.oltd.de/auth/realms/olt`,
+      authority: `https://api.${environment}.oltd.de/v1/id/auth/realms/olt`,
       client_id: clientId,
       scope: scope.join(' '),
       response_type: 'id_token token',
