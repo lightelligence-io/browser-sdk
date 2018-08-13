@@ -8,11 +8,10 @@
     "test": "jest --coverage",
     "lint": "eslint src/** test/**",
     "documentation": "documentation build src/** -f html -o docs --theme lightelligence_theme",
-    "build": "webpack --config webpack.config.js",
+    "build": "rm -rf dist && webpack --config webpack.config.js",
     "license-report": "legally",
     "precommit": "npm run lint && npm run test",
-    "prepare": "npm install",
-    "postinstall": "npm run build"
+    "postinstall": "postinstall-build dist"
   },
   "repository": {
     "type": "git",
@@ -28,8 +27,7 @@
   "author": "Roman Makovyak",
   "license": "MIT",
   "homepage": "https://bitbucket.org/lightelligence/javascript-sdk#readme",
-  "dependencies": {
-    "oidc-client": "^1.5.2",
+  "devDdependencies": {
     "babel-core": "^6.26.3",
     "babel-jest": "^23.4.0",
     "babel-loader": "^7.1.5",
@@ -51,6 +49,10 @@
     "npm": "^6.2.0",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "oidc-client": "^1.5.2",
+    "postinstall-build": "^5.0.1"
   },
   "jest": {
     "setupFiles": [

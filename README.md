@@ -2,6 +2,8 @@
 
 Provides tools to make app development with lightelligence platform faster and easier. Contains of authorization for node and browser environments, wrappers around all api endpoints, util methods.
 
+NOTE: currently you _need_ to commit dist folder in order for sdk to work. We are working on a better solution.
+
 ##Dependencies
 
 - [oidc-client](https://github.com/IdentityModel/oidc-client-js) Library to provide OpenID Connect (OIDC) and OAuth2 protocol support for client-side, browser-based JavaScript client applications
@@ -34,17 +36,21 @@ npm run build
 ```
 
 ### Build documentation
-available under ```docs/index.html```
+
+available under `docs/index.html`
 
 ```
 npm run documentation
 ```
 
 ## Deployment
+
 Library is published to npm via bitbucket pipelines job.
 
 ## Access
+
 TODO: link to npm package
 
 ## LICENCE
+
 MIT
