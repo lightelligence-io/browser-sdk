@@ -107,7 +107,7 @@
         <p>To start using browser sdk you will need to install it via npm:</p>
         <div class="pre p1 fill-light mt0">npm install <%- config['project-name'] %></div>
         <p>and import it in your source code:</p>
-        <div class="pre p1 fill-light mt0">import BrowserSDK from '<%- config['project-name'] %>';</div>
+        <div class="pre p1 fill-light mt0">import BrowserSDK from 'lightelligence-javascript-sdk';</div>
         <p>Then you will need to create an instance of sdk:</p>
         <div class="pre p1 fill-light mt0">
           const browserSDK = new BrowserSDK({<br/>

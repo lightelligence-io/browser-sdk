@@ -1,5 +1,5 @@
 {
-  "name": "javascript-sdk",
+  "name": "lightelligence-javascript-sdk",
   "version": "0.1.0",
   "description": "javascript SDK for lightelligence platform",
   "main": "dist/bundle.web.js",
