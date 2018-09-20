@@ -30,4 +30,27 @@ pipelines:
           - npm run build
         caches:
           - node
-  
+  branches:
+    master:
+      - step:
+          name: Build documentation
+          script:
+            - export DOCKER_IMAGE_TAG=$DOCKER_REPO/${APP_NAME}:${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}
+            - npm install
+            - npm run documentation
+            - docker build -t ${DOCKER_IMAGE_TAG} .
+            - docker login -u $DOCKER_REPO_NAME -p $DOCKER_REPO_PASSWORD $DOCKER_REPO
+            - docker push ${DOCKER_IMAGE_TAG}
+          services:
+            - docker
+          caches:
+            - docker
+            - node
+      - step:
+          name: Deploy documentation
+          deployment: production
+          script:
+            - export DOCKER_IMAGE_TAG=$DOCKER_REPO/${APP_NAME}:${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}
+            - az login -u $AZ_USER -p $AZ_PASSWORD
+            - az webapp config container set -i ${DOCKER_IMAGE_TAG} -r https://$DOCKER_REPO  --name $APP_NAME --resource-group oih-temp-roman
+          image: microsoft/azure-cli:2.0.34

@@ -1,5 +1,7 @@
 # javascript-sdk
 
+[User documentation](https://lightelligence-javascript-sdk.azurewebsites.net/)
+
 Provides tools to make app development with lightelligence platform faster and easier. Contains of authorization for node and browser environments, wrappers around all api endpoints, util methods.
 
 NOTE: currently you _need_ to commit dist folder in order for sdk to work. We are working on a better solution.
