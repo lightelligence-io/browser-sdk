@@ -3,6 +3,7 @@ const spreadPlugin = require('babel-plugin-transform-object-rest-spread');
 const transformRuntimePlugin = require('babel-plugin-transform-runtime');
 
 const baseConfig = {
+  devtool: 'source-map',
   entry: './src/index-web.js',
   mode: 'production',
   module: {
