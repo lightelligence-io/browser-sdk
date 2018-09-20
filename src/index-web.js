@@ -1,13 +1,13 @@
-import { UserManager } from 'oidc-client';
-import UserManagerProvider from './tools/userManagerProvider';
-import EnvironmentProvider from './tools/environmentProvider';
-import Tenant from './modules/tenant';
-import Client from './modules/client';
-import Device from './modules/device';
-import Timeseries from './modules/timeseries';
-import Event from './modules/event';
-import Certificate from './modules/certificate';
-import DeviceType from './modules/deviceType';
+import { UserManager } from "oidc-client";
+import UserManagerProvider from "./tools/userManagerProvider";
+import EnvironmentProvider from "./tools/environmentProvider";
+import Tenant from "./modules/tenant";
+import Client from "./modules/client";
+import Device from "./modules/device";
+import Timeseries from "./modules/timeseries";
+import Event from "./modules/event";
+import Certificate from "./modules/certificate";
+import DeviceType from "./modules/deviceType";
 
 export { Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate };
 
@@ -21,18 +21,22 @@ export { Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate };
  * @param {string} options.clientId - registered app client id
  */
 export default class BrowserSDK {
-  constructor({ environment, clientId, scope = ['openid', 'profile', 'email', 'offline_access'] }) {
+  constructor({
+    environment,
+    clientId,
+    scope = ["openid", "profile", "email", "offline_access"]
+  }) {
     if (!environment || !clientId) {
-      throw Error('OLT Browser SDK: Missing one or more init options.');
+      throw Error("OLT Browser SDK: Missing one or more init options.");
     }
 
     this.manager = new UserManager({
       authority: `https://api.${environment}.oltd.de/v1/id/auth/realms/olt`,
       client_id: clientId,
-      scope: scope.join(' '),
-      response_type: 'id_token token',
+      scope: scope.join(" "),
+      response_type: "id_token token",
       redirect_uri: window.location.origin,
-      post_logout_redirect_uri: window.location.origin,
+      post_logout_redirect_uri: window.location.origin
     });
 
     this.manager
@@ -40,12 +44,14 @@ export default class BrowserSDK {
       .then(() => {
         window.location = window.location.origin;
       })
-      .catch(() => null);
+      .catch(e => {
+        throw new Error(e);
+      });
 
     UserManagerProvider.set(this.manager);
     EnvironmentProvider.set({
       apiUri: `https://api.${environment}.oltd.de/v1`,
-      clientId,
+      clientId
     });
   }
 
@@ -53,7 +59,7 @@ export default class BrowserSDK {
    * Redirects to login page if user is not logged in already
    */
   login() {
-    return this.manager.getUser().then((user) => {
+    return this.manager.getUser().then(user => {
       if (!user) {
         this.manager.signinRedirect();
       }
