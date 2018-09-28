@@ -11,6 +11,8 @@ import DeviceType from "./modules/deviceType";
 
 export { Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate };
 
+const AUTH_CALLBACK_PATH = "/auth-callback";
+
 /**
  * Main browser sdk module
  * TODO: add getting started block here
@@ -35,18 +37,21 @@ export default class BrowserSDK {
       client_id: clientId,
       scope: scope.join(" "),
       response_type: "id_token token",
-      redirect_uri: window.location.origin,
+      redirect_uri: `${window.location.origin}${AUTH_CALLBACK_PATH}`,
       post_logout_redirect_uri: window.location.origin
     });
 
-    this.manager
-      .signinRedirectCallback()
-      .then(() => {
-        window.location = window.location.origin;
-      })
-      .catch(e => {
-        throw new Error(e);
-      });
+    // execute this code only on redirect from token issuer
+    if (window.location.pathname === AUTH_CALLBACK_PATH) {
+      this.manager
+        .signinRedirectCallback()
+        .then(() => {
+          window.location = window.location.origin;
+        })
+        .catch(e => {
+          throw new Error(e);
+        });
+    }
 
     UserManagerProvider.set(this.manager);
     EnvironmentProvider.set({
@@ -60,7 +65,8 @@ export default class BrowserSDK {
    */
   login() {
     return this.manager.getUser().then(user => {
-      if (!user) {
+      // ignore this code only on redirect from token issuer
+      if (!user && window.location.pathname !== AUTH_CALLBACK_PATH) {
         this.manager.signinRedirect();
       }
     });
