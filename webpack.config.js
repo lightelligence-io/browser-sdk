@@ -5,7 +5,7 @@ const transformRuntimePlugin = require('babel-plugin-transform-runtime');
 const baseConfig = {
   devtool: 'source-map',
   entry: './src/index-web.js',
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {
