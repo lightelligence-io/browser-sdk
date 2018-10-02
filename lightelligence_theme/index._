@@ -136,6 +136,7 @@
           </div>
         </div>
         <p>Now you are ready to build your application. Explore available methods below.</p>
+        <p>NOTE: Ensure that your app is redirect all request to index.html file. The authorization would not work without it</p>
         </section>
         <% docs.forEach(function(s) { %>
           <% if (s.kind === 'note') { %>
