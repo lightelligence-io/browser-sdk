@@ -17,8 +17,8 @@ const AUTH_CALLBACK_PATH = "/auth-callback";
  * Main browser sdk module
  * TODO: add getting started block here
  * @param {Object} options
- * @param {string} options.environment - lightelligence environment.
- * avalaible options: 'dev', 'int', 'preview'
+ * @param {string} [options.environment] - lightelligence environment.
+ * avalaible options: 'dev', 'int', 'preview', 'prod'
  * @param {array} [options.scope = ['openid', 'profile', 'email', 'offline_access']] - openid scope
  * @param {string} options.clientId - registered app client id
  */
@@ -33,7 +33,7 @@ export default class BrowserSDK {
     }
 
     this.manager = new UserManager({
-      authority: `https://api.${environment}.oltd.de/v1/id/auth/realms/olt`,
+      authority: environment === 'prod' ? 'https://api.lightelligence.io/v1/id/auth/realms/olt' :`https://api.${environment}.oltd.de/v1/id/auth/realms/olt`,
       client_id: clientId,
       scope: scope.join(" "),
       response_type: "id_token token",
