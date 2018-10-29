@@ -4236,7 +4236,8 @@ var call = function () {
               method: method,
               body: body ? (0, _stringify2.default)(body) : undefined,
               headers: {
-                authorization: 'Bearer ' + user.access_token
+                authorization: 'Bearer ' + user.access_token,
+                'Content-Type': 'application/json'
               }
             }).then(function (response) {
               return response.json();

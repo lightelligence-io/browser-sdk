@@ -22,6 +22,7 @@ async function call(path, method = 'GET', body = null) {
     body: body ? JSON.stringify(body) : undefined,
     headers: {
       authorization: `Bearer ${user.access_token}`,
+      'Content-Type': 'application/json',
     },
   }).then((response) => response.json());
 }
