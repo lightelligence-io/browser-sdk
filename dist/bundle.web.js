@@ -3400,6 +3400,8 @@ var BrowserSDK = function () {
 
   /**
    * Redirects to login page if user is not logged in already
+   * @param {Object} options
+   * @param {string} [options.loginHint] - login_hint to forward email/username in keycloak.
    */
 
 
@@ -3408,10 +3410,13 @@ var BrowserSDK = function () {
     value: function login() {
       var _this = this;
 
+      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          loginHint = _ref2.loginHint;
+
       return this.manager.getUser().then(function (user) {
         // ignore this code only on redirect from token issuer
         if (!user && window.location.pathname !== AUTH_CALLBACK_PATH) {
-          _this.manager.signinRedirect();
+          _this.manager.signinRedirect({ login_hint: loginHint });
         }
       });
     }

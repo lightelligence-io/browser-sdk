@@ -35,6 +35,16 @@ describe('browser module', () => {
       });
     });
 
+    it('calls signinRedirect method with loginHint if passed as option', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
+      sdk.manager.signinRedirect = jest.fn();
+      const loginHint = 's@n.se';
+      return sdk.login({ loginHint }).then(() => {
+        expect(sdk.manager.signinRedirect.mock.calls.length).toBe(1);
+        expect(sdk.manager.signinRedirect.mock.calls[0][0]).toEqual({ login_hint: loginHint });
+      });
+    });
+
     it('dont call signinRedirect method when user is authorized', () => {
       const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
       sdk.manager.getUser = jest.fn().mockResolvedValue({ access_token: 'abcdefg' });

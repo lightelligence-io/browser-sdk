@@ -62,12 +62,14 @@ export default class BrowserSDK {
 
   /**
    * Redirects to login page if user is not logged in already
+   * @param {Object} [options]
+   * @param {string} [options.loginHint] - login_hint to forward email/username in keycloak.
    */
-  login() {
+  login({ loginHint } = {}) {
     return this.manager.getUser().then(user => {
       // ignore this code only on redirect from token issuer
       if (!user && window.location.pathname !== AUTH_CALLBACK_PATH) {
-        this.manager.signinRedirect();
+        this.manager.signinRedirect({ login_hint: loginHint });
       }
     });
   }
