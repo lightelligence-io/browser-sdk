@@ -33,7 +33,7 @@ export default class BrowserSDK {
     }
 
     this.manager = new UserManager({
-      authority: environment === 'prod' ? 'https://api.lightelligence.io/v1/id/auth/realms/olt' :`https://api.${environment}.oltd.de/v1/id/auth/realms/olt`,
+      authority: environment === 'prod' ? 'https://id.lightelligence.io/v1/id/auth/realms/olt' :`https://id.${environment}.oltd.de/v1/id/auth/realms/olt`,
       client_id: clientId,
       scope: scope.join(" "),
       response_type: "id_token token",
