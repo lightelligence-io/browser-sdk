@@ -24,7 +24,15 @@ async function call(path, method = 'GET', body = null) {
       authorization: `Bearer ${user.access_token}`,
       'Content-Type': 'application/json',
     },
-  }).then((response) => response.json());
+  }).then(async (response) => {
+    const base = { response, httpStatusCode: response.status };
+    const contentType = response.headers.get('content-type');
+    if (contentType === 'application/json') {
+      const json = await response.json();
+      return { ...base, ...json };
+    }
+    return base;
+  });
 }
 
 export default {

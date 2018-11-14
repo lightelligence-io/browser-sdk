@@ -3374,7 +3374,7 @@ var BrowserSDK = function () {
     }
 
     this.manager = new _oidcClient.UserManager({
-      authority: environment === 'prod' ? 'https://api.lightelligence.io/v1/id/auth/realms/olt' : "https://api." + environment + ".oltd.de/v1/id/auth/realms/olt",
+      authority: environment === 'prod' ? 'https://id.lightelligence.io/v1/id/auth/realms/olt' : "https://id." + environment + ".oltd.de/v1/id/auth/realms/olt",
       client_id: clientId,
       scope: scope.join(" "),
       response_type: "id_token token",
@@ -3400,7 +3400,7 @@ var BrowserSDK = function () {
 
   /**
    * Redirects to login page if user is not logged in already
-   * @param {Object} options
+   * @param {Object} [options]
    * @param {string} [options.loginHint] - login_hint to forward email/username in keycloak.
    */
 
