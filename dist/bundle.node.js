@@ -4185,6 +4185,10 @@ var _regenerator = __webpack_require__(/*! babel-runtime/regenerator */ "./node_
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
+var _extends2 = __webpack_require__(/*! babel-runtime/helpers/extends */ "./node_modules/babel-runtime/helpers/extends.js");
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _stringify = __webpack_require__(/*! babel-runtime/core-js/json/stringify */ "./node_modules/babel-runtime/core-js/json/stringify.js");
 
 var _stringify2 = _interopRequireDefault(_stringify);
@@ -4202,48 +4206,84 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
  * @returns {Promise}
  */
 var call = function () {
-  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(path) {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(path) {
+    var _this = this;
+
     var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'GET';
     var body = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
     var user, _EnvironmentProvider$, apiUri;
 
-    return _regenerator2.default.wrap(function _callee$(_context) {
+    return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
-        switch (_context.prev = _context.next) {
+        switch (_context2.prev = _context2.next) {
           case 0:
-            _context.next = 2;
+            _context2.next = 2;
             return _userManagerProvider2.default.get().getUser();
 
           case 2:
-            user = _context.sent;
+            user = _context2.sent;
             _EnvironmentProvider$ = _environmentProvider2.default.get(), apiUri = _EnvironmentProvider$.apiUri;
 
             if (user) {
-              _context.next = 6;
+              _context2.next = 6;
               break;
             }
 
             throw Error('OLT Browser SDK: No authorized user found');
 
           case 6:
-            return _context.abrupt('return', fetch('' + apiUri + path, {
+            return _context2.abrupt('return', fetch('' + apiUri + path, {
               method: method,
               body: body ? (0, _stringify2.default)(body) : undefined,
               headers: {
                 authorization: 'Bearer ' + user.access_token,
                 'Content-Type': 'application/json'
               }
-            }).then(function (response) {
-              return response.json();
-            }));
+            }).then(function () {
+              var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(response) {
+                var base, contentType, json;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        base = { response: response, httpStatusCode: response.status };
+                        contentType = response.headers.get('content-type');
+
+                        if (!(contentType && contentType.indexOf('application/json') !== -1)) {
+                          _context.next = 7;
+                          break;
+                        }
+
+                        _context.next = 5;
+                        return response.json();
+
+                      case 5:
+                        json = _context.sent;
+                        return _context.abrupt('return', (0, _extends3.default)({}, base, json));
+
+                      case 7:
+                        return _context.abrupt('return', base);
+
+                      case 8:
+                      case 'end':
+                        return _context.stop();
+                    }
+                  }
+                }, _callee, _this);
+              }));
+
+              return function (_x4) {
+                return _ref2.apply(this, arguments);
+              };
+            }()));
 
           case 7:
           case 'end':
-            return _context.stop();
+            return _context2.stop();
         }
       }
-    }, _callee, this);
+    }, _callee2, this);
   }));
 
   return function call(_x3) {

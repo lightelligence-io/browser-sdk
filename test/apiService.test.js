@@ -46,6 +46,16 @@ describe('ApiService.call', () => {
     });
   });
 
+  it('can handle json responses where content-type contains application/json as a substring', () => {
+    const responseMock = { data: '12345' };
+    fetch.mockResponseOnce(JSON.stringify(responseMock), { headers: { 'content-type': 'application/json; charset=utf-8' } });
+
+    return ApiService.call('/test-uri').then((response) => {
+      expect(response.data).toEqual(responseMock.data);
+      expect(response.httpStatusCode).toEqual(200);
+    });
+  });
+
   it('can handle non json responses', () => {
     const responseMock = 'no json';
 

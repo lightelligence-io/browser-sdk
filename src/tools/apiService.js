@@ -27,7 +27,7 @@ async function call(path, method = 'GET', body = null) {
   }).then(async (response) => {
     const base = { response, httpStatusCode: response.status };
     const contentType = response.headers.get('content-type');
-    if (contentType === 'application/json') {
+    if (contentType && contentType.indexOf('application/json') !== -1) {
       const json = await response.json();
       return { ...base, ...json };
     }
