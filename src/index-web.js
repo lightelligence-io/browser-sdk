@@ -75,6 +75,14 @@ export default class BrowserSDK {
   }
 
   /**
+   * Redirects to the tenant selection page if the user is already logged in.
+   * Otherwise it redirects to the keycloak login page.
+   */
+  changeTenant() {
+    this.manager.signinRedirect();
+  }
+
+  /**
    * Logs user out
    */
   logout() {
