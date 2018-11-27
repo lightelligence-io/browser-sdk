@@ -34,4 +34,34 @@ describe('Tenant module', () => {
     Tenant.deleteTenant('1').then(() =>
       expect(ApiService.call).toBeCalledWith('/tenants/1', 'DELETE'),
     ));
+
+  test('createInvite calls ApiService', () =>
+    Tenant.createInvite('1', { receiverEmail: 'a@b.se', roleNames: ['admin'] }).then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/invites', 'POST', { receiverEmail: 'a@b.se', roleNames: ['admin'] }),
+    ));
+
+  test('getInvites calls ApiService', () =>
+    Tenant.getInvites('1').then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/invites'),
+    ));
+  
+  test('deleteInvite calls ApiService', () =>
+    Tenant.deleteInvite('1', '2').then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/invites/2', 'DELETE'),
+    ));
+
+  test('getTenantRoles calls ApiService', () =>
+    Tenant.getTenantRoles('1').then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/roles'),
+    ));
+
+  test('getTenantUserPermissions calls ApiService', () =>
+    Tenant.getTenantUserPermissions('1', '2').then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/users/2/permissions'),
+    ));
+
+  test('putTenantUserRoles calls ApiService', () =>
+    Tenant.putTenantUserRoles('1', '2', { roleNames: ['reader'] }).then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/users/2', 'PUT', { roleNames: ['reader'] }),
+    ));
 });

@@ -18,7 +18,7 @@ export default class Tenant {
   }
 
   /**
-   * Creates a new tenant
+   * Creates a new tenant and assigns role 'admin' to user.
    * @param {object} tenant
    * @returns {Promise}
    */
@@ -51,5 +51,68 @@ export default class Tenant {
    */
   static deleteTenant(tenantId) {
     return ApiService.call(`/tenants/${tenantId}`, 'DELETE');
+  }
+
+  /**
+   * Create invite for tenant
+   * @param {string} tenantId
+   * @param {Object} invite - the invite to be created.
+   * @param {string} invite.receiverEmail - email of user to be invited
+   * @param {array<string>} invite.roleNames - Array of roles for user to be assigned to. Ex. ['admin']
+   * @returns {Promise}
+   */
+  static createInvite(tenantId, invite) {
+    return ApiService.call(`/tenants/${tenantId}/invites`, 'POST', invite);
+  }
+
+  /**
+   * Get tenant invites
+   * @param {string} tenantId
+   * @returns {Promise}
+   */
+  static getInvites(tenantId) {
+    return ApiService.call(`/tenants/${tenantId}/invites`);
+  }
+
+  /**
+   * Delete (revoke) a invite for a user.
+   * - Only open invites can be deleted
+   * @param {string} tenantId
+   * @param {string} inviteId
+   * @returns {Promise}
+   */
+  static deleteInvite(tenantId, inviteId) {
+    return ApiService.call(`/tenants/${tenantId}/invites/${inviteId}`, 'DELETE');
+  }
+
+  /**
+   * Gets roles of tenant
+   * @param {string} tenantId
+   * @returns {Promise}
+   */
+  static getTenantRoles(tenantId) {
+    return ApiService.call(`/tenants/${tenantId}/roles`);
+  }
+
+  /**
+   * Gets user permissions for specified tenant
+   * @param {string} tenantId
+   * @param {string} userId
+   * @returns {Promise}
+   */
+  static getTenantUserPermissions(tenantId, userId) {
+    return ApiService.call(`/tenants/${tenantId}/users/${userId}/permissions`);
+  }
+
+  /**
+   * Update roles of user for tenant
+   * - roleNames will replace the current roles.
+   * @param {string} tenantId
+   * @param {string} userId
+   * @param {{ roleNames: array<string> }} put - roles to update to. Ex: ['reader']
+   * @returns {Promise}
+   */
+  static putTenantUserRoles(tenantId, userId, put) {
+    return ApiService.call(`/tenants/${tenantId}/users/${userId}`, 'PUT', put);
   }
 }

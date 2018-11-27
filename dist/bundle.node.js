@@ -4016,6 +4016,17 @@ var Tenant = function () {
     key: 'getUserTenants',
 
     /**
+     * A role for a tenant or a users tenant role
+     * @typede {{ name: string, displayName: string, createdAt: string, updatedAt: string }} TenantRole
+     * 
+     * Tenant connected to a user with the users roles
+     * @typede {{ id: string, name: string, userRoles: array<TenantRole> }} UserTenant
+     * 
+     * A user with userRoles for a specific tenant (by request)
+     * @typede {{ id: string, name: string, userRoles: array<TenantRole> }} TenantUser
+     */
+
+    /**
      * Get the tenants of a user for the supplied userId
      * @param {string} userId
      * @param {object} params search params
@@ -4029,7 +4040,7 @@ var Tenant = function () {
     }
 
     /**
-     * Creates a new tenant
+     * Creates a new tenant and assigns role 'admin' to user.
      * @param {object} tenant
      * @returns {Promise}
      */
@@ -4074,6 +4085,87 @@ var Tenant = function () {
     key: 'deleteTenant',
     value: function deleteTenant(tenantId) {
       return _apiService2.default.call('/tenants/' + tenantId, 'DELETE');
+    }
+
+    /**
+     * Create invite for tenant
+     * @param {string} tenantId
+     * @param {Object} invite - the invite to be created.
+     * @param {string} invite.receiverEmail - email of user to be invited
+     * @param {array<string>} invite.roleNames - Array of roles for user to be assigned to. Ex. ['admin']
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'createInvite',
+    value: function createInvite(tenantId, invite) {
+      return _apiService2.default.call('/tenants/' + tenantId + '/invites', 'POST', invite);
+    }
+
+    /**
+     * Get tenant invites
+     * @param {string} tenantId
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'getInvites',
+    value: function getInvites(tenantId) {
+      return _apiService2.default.call('/tenants/' + tenantId + '/invites');
+    }
+
+    /**
+     * Delete (revoke) a invite for a user.
+     * - Only open invites can be deleted
+     * @param {string} tenantId
+     * @param {string} inviteId
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'deleteInvite',
+    value: function deleteInvite(tenantId, inviteId) {
+      return _apiService2.default.call('/tenants/' + tenantId + '/invites/' + inviteId, 'DELETE');
+    }
+
+    /**
+     * Gets roles of tenant
+     * @param {string} tenantId
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'getTenantRoles',
+    value: function getTenantRoles(tenantId) {
+      return _apiService2.default.call('/tenants/' + tenantId + '/roles');
+    }
+
+    /**
+     * Gets user permissions for specified tenant
+     * @param {string} tenantId
+     * @param {string} userId
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'getTenantUserPermissions',
+    value: function getTenantUserPermissions(tenantId, userId) {
+      return _apiService2.default.call('/tenants/' + tenantId + '/users/' + userId + '/permissions');
+    }
+
+    /**
+     * Update roles of user for tenant
+     * - roleNames will replace the current roles.
+     * @param {string} tenantId
+     * @param {string} userId
+     * @param {{ roleNames: array<string> }} put - roles to update to. Ex: ['reader']
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'putTenantUserRoles',
+    value: function putTenantUserRoles(tenantId, userId, put) {
+      return _apiService2.default.call('/tenants/' + tenantId + '/users/' + userId, 'PUT', put);
     }
   }]);
   return Tenant;
