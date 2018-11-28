@@ -115,4 +115,14 @@ export default class Tenant {
   static putTenantUserRoles(tenantId, userId, put) {
     return ApiService.call(`/tenants/${tenantId}/users/${userId}`, 'PUT', put);
   }
+
+  /**
+   * Partially change the data of a specific tenant by its id. The Id itself is not changeable.
+   * @param {string} tenantId
+   * @param {object} patch changes to tenant
+   * @returns {Promise}
+   */
+  static patchTenant(tenantId, patch) {
+    return ApiService.call(`/tenants/${tenantId}`, 'PATCH', patch);
+  }
 }
