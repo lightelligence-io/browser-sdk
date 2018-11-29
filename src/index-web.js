@@ -1,17 +1,17 @@
-import { UserManager } from "oidc-client";
-import UserManagerProvider from "./tools/userManagerProvider";
-import EnvironmentProvider from "./tools/environmentProvider";
-import Tenant from "./modules/tenant";
-import Client from "./modules/client";
-import Device from "./modules/device";
-import Timeseries from "./modules/timeseries";
-import Event from "./modules/event";
-import Certificate from "./modules/certificate";
-import DeviceType from "./modules/deviceType";
+import { UserManager } from 'oidc-client';
+import userManagerProvider from './tools/userManagerProvider';
+import environmentProvider from './tools/environmentProvider';
+import Tenant from './modules/tenant';
+import Client from './modules/client';
+import Device from './modules/device';
+import Timeseries from './modules/timeseries';
+import Event from './modules/event';
+import Certificate from './modules/certificate';
+import DeviceType from './modules/deviceType';
 
 export { Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate };
 
-const AUTH_CALLBACK_PATH = "/auth-callback";
+const AUTH_CALLBACK_PATH = '/auth-callback';
 
 /**
  * Main browser sdk module
@@ -26,19 +26,21 @@ export default class BrowserSDK {
   constructor({
     environment,
     clientId,
-    scope = ["openid", "profile", "email", "offline_access"]
+    scope = ['openid', 'profile', 'email', 'offline_access'],
   }) {
     if (!environment || !clientId) {
-      throw Error("OLT Browser SDK: Missing one or more init options.");
+      throw Error('OLT Browser SDK: Missing one or more init options.');
     }
 
+    const baseUrl = environmentProvider.getBaseUrlFromEnv(environment);
+
     this.manager = new UserManager({
-      authority: environment === 'prod' ? 'https://id.lightelligence.io/v1/id/auth/realms/olt' :`https://id.${environment}.oltd.de/v1/id/auth/realms/olt`,
+      authority: `https://id.${baseUrl}/v1/id/auth/realms/olt`,
       client_id: clientId,
-      scope: scope.join(" "),
-      response_type: "id_token token",
+      scope: scope.join(' '),
+      response_type: 'id_token token',
       redirect_uri: `${window.location.origin}${AUTH_CALLBACK_PATH}`,
-      post_logout_redirect_uri: window.location.origin
+      post_logout_redirect_uri: window.location.origin,
     });
 
     // execute this code only on redirect from token issuer
@@ -53,10 +55,10 @@ export default class BrowserSDK {
         });
     }
 
-    UserManagerProvider.set(this.manager);
-    EnvironmentProvider.set({
-      apiUri: `https://api.${environment}.oltd.de/v1`,
-      clientId
+    userManagerProvider.set(this.manager);
+    environmentProvider.set({
+      apiUri: `https://api.${baseUrl}/v1`,
+      clientId,
     });
   }
 
@@ -86,7 +88,7 @@ export default class BrowserSDK {
    * Logs user out
    */
   logout() {
-    UserManagerProvider.clear();
+    userManagerProvider.clear();
     this.manager.signoutRedirect();
   }
 

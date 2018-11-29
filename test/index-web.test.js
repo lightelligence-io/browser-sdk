@@ -1,6 +1,6 @@
 import BrowserSDK from '../src/index-web';
-import UserManagerProvider from '../src/tools/userManagerProvider';
-import EnvironmentProvider from '../src/tools/environmentProvider';
+import userManagerProvider from '../src/tools/userManagerProvider';
+import environmentProvider from '../src/tools/environmentProvider';
 
 describe('browser module', () => {
   describe('constructor', () => {
@@ -15,14 +15,14 @@ describe('browser module', () => {
       expect(sdk.manager.settings).toBeDefined();
     });
 
-    it('sets UserManagerProvider', () => {
+    it('sets userManagerProvider', () => {
       const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' }); // eslint-disable-line no-unused-vars
-      expect(UserManagerProvider.get()).toBeDefined();
+      expect(userManagerProvider.get()).toBeDefined();
     });
 
     it('sets EnvironmentProvider', () => {
       const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' }); // eslint-disable-line no-unused-vars
-      expect(EnvironmentProvider.get()).toBeDefined();
+      expect(environmentProvider.get()).toBeDefined();
     });
   });
 
@@ -41,13 +41,17 @@ describe('browser module', () => {
       const loginHint = 's@n.se';
       return sdk.login({ loginHint }).then(() => {
         expect(sdk.manager.signinRedirect.mock.calls.length).toBe(1);
-        expect(sdk.manager.signinRedirect.mock.calls[0][0]).toEqual({ login_hint: loginHint });
+        expect(sdk.manager.signinRedirect.mock.calls[0][0]).toEqual({
+          login_hint: loginHint
+        });
       });
     });
 
     it('dont call signinRedirect method when user is authorized', () => {
       const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
-      sdk.manager.getUser = jest.fn().mockResolvedValue({ access_token: 'abcdefg' });
+      sdk.manager.getUser = jest
+        .fn()
+        .mockResolvedValue({ access_token: 'abcdefg' });
       sdk.manager.signinRedirect = jest.fn();
       return sdk.login().then(() => {
         expect(sdk.manager.signinRedirect.mock.calls.length).toBe(0);
@@ -63,10 +67,10 @@ describe('browser module', () => {
       expect(sdk.manager.signoutRedirect.mock.calls.length).toBe(1);
     });
 
-    it('clears UserManagerProvider', () => {
+    it('clears userManagerProvider', () => {
       const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' }); // eslint-disable-line no-unused-vars
       sdk.logout();
-      expect(UserManagerProvider.get()).toBeUndefined();
+      expect(userManagerProvider.get()).toBeUndefined();
     });
   });
 
@@ -75,7 +79,7 @@ describe('browser module', () => {
       const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
       const userMock = { access_token: 'abcdefg' };
       sdk.manager.getUser = jest.fn().mockResolvedValue(userMock);
-      return sdk.getCurrentUser().then((response) => {
+      return sdk.getCurrentUser().then(response => {
         expect(response).toEqual(userMock);
       });
     });
