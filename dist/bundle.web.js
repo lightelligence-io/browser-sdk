@@ -3349,7 +3349,7 @@ exports.Event = _event2.default;
 exports.Certificate = _certificate2.default;
 
 
-var AUTH_CALLBACK_PATH = "/auth-callback";
+var AUTH_CALLBACK_PATH = '/auth-callback';
 
 /**
  * Main browser sdk module
@@ -3366,19 +3366,21 @@ var BrowserSDK = function () {
     var environment = _ref.environment,
         clientId = _ref.clientId,
         _ref$scope = _ref.scope,
-        scope = _ref$scope === undefined ? ["openid", "profile", "email", "offline_access"] : _ref$scope;
+        scope = _ref$scope === undefined ? ['openid', 'profile', 'email', 'offline_access'] : _ref$scope;
     (0, _classCallCheck3.default)(this, BrowserSDK);
 
     if (!environment || !clientId) {
-      throw Error("OLT Browser SDK: Missing one or more init options.");
+      throw Error('OLT Browser SDK: Missing one or more init options.');
     }
 
+    var baseUrl = _environmentProvider2.default.getBaseUrlFromEnv(environment);
+
     this.manager = new _oidcClient.UserManager({
-      authority: environment === 'prod' ? 'https://id.lightelligence.io/v1/id/auth/realms/olt' : "https://id." + environment + ".oltd.de/v1/id/auth/realms/olt",
+      authority: 'https://id.' + baseUrl + '/v1/id/auth/realms/olt',
       client_id: clientId,
-      scope: scope.join(" "),
-      response_type: "id_token token",
-      redirect_uri: "" + window.location.origin + AUTH_CALLBACK_PATH,
+      scope: scope.join(' '),
+      response_type: 'id_token token',
+      redirect_uri: '' + window.location.origin + AUTH_CALLBACK_PATH,
       post_logout_redirect_uri: window.location.origin
     });
 
@@ -3393,7 +3395,7 @@ var BrowserSDK = function () {
 
     _userManagerProvider2.default.set(this.manager);
     _environmentProvider2.default.set({
-      apiUri: "https://api." + environment + ".oltd.de/v1",
+      apiUri: 'https://api.' + baseUrl + '/v1',
       clientId: clientId
     });
   }
@@ -3406,7 +3408,7 @@ var BrowserSDK = function () {
 
 
   (0, _createClass3.default)(BrowserSDK, [{
-    key: "login",
+    key: 'login',
     value: function login() {
       var _this = this;
 
@@ -3427,7 +3429,7 @@ var BrowserSDK = function () {
      */
 
   }, {
-    key: "changeTenant",
+    key: 'changeTenant',
     value: function changeTenant() {
       this.manager.signinRedirect();
     }
@@ -3437,7 +3439,7 @@ var BrowserSDK = function () {
      */
 
   }, {
-    key: "logout",
+    key: 'logout',
     value: function logout() {
       _userManagerProvider2.default.clear();
       this.manager.signoutRedirect();
@@ -3449,7 +3451,7 @@ var BrowserSDK = function () {
      */
 
   }, {
-    key: "getCurrentUser",
+    key: 'getCurrentUser',
     value: function getCurrentUser() {
       return this.manager.getUser();
     }
@@ -4026,17 +4028,6 @@ var Tenant = function () {
     key: 'getUserTenants',
 
     /**
-     * A role for a tenant or a users tenant role
-     * @typede {{ name: string, displayName: string, createdAt: string, updatedAt: string }} TenantRole
-     * 
-     * Tenant connected to a user with the users roles
-     * @typede {{ id: string, name: string, userRoles: array<TenantRole> }} UserTenant
-     * 
-     * A user with userRoles for a specific tenant (by request)
-     * @typede {{ id: string, name: string, userRoles: array<TenantRole> }} TenantUser
-     */
-
-    /**
      * Get the tenants of a user for the supplied userId
      * @param {string} userId
      * @param {object} params search params
@@ -4176,6 +4167,19 @@ var Tenant = function () {
     key: 'putTenantUserRoles',
     value: function putTenantUserRoles(tenantId, userId, put) {
       return _apiService2.default.call('/tenants/' + tenantId + '/users/' + userId, 'PUT', put);
+    }
+
+    /**
+     * Partially change the data of a specific tenant by its id. The Id itself is not changeable.
+     * @param {string} tenantId
+     * @param {object} patch changes to tenant
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'patchTenant',
+    value: function patchTenant(tenantId, patch) {
+      return _apiService2.default.call('/tenants/' + tenantId, 'PATCH', patch);
     }
   }]);
   return Tenant;
@@ -4325,7 +4329,7 @@ var call = function () {
     var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'GET';
     var body = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-    var user, _EnvironmentProvider$, apiUri;
+    var user, _environmentProvider$, apiUri;
 
     return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
@@ -4336,7 +4340,7 @@ var call = function () {
 
           case 2:
             user = _context2.sent;
-            _EnvironmentProvider$ = _environmentProvider2.default.get(), apiUri = _EnvironmentProvider$.apiUri;
+            _environmentProvider$ = _environmentProvider2.default.get(), apiUri = _environmentProvider$.apiUri;
 
             if (user) {
               _context2.next = 6;
@@ -4451,14 +4455,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var EnvironmentProvider = function () {
   function EnvironmentProvider() {
     (0, _classCallCheck3.default)(this, EnvironmentProvider);
+
+    this.envs = {
+      dev: 'dev.olt-dev.io',
+      int: 'int.olt-dev.io',
+      preview: 'olt-preview.io',
+      prod: 'lightelligence.io'
+    };
   }
 
-  (0, _createClass3.default)(EnvironmentProvider, [{
-    key: "get",
+  /**
+   * Returns environment
+   */
 
-    /**
-     * Returns environment
-     */
+
+  (0, _createClass3.default)(EnvironmentProvider, [{
+    key: 'get',
     value: function get() {
       return this.environment;
     }
@@ -4469,7 +4481,7 @@ var EnvironmentProvider = function () {
      */
 
   }, {
-    key: "set",
+    key: 'set',
     value: function set(environment) {
       this.environment = environment;
     }
@@ -4479,9 +4491,21 @@ var EnvironmentProvider = function () {
      */
 
   }, {
-    key: "clear",
+    key: 'clear',
     value: function clear() {
       this.environment = undefined;
+    }
+
+    /**
+     * Get the base url for one of the existing environments
+     * @param {The enviroment to request the url for} environment
+     * @returns The url as a string
+     */
+
+  }, {
+    key: 'getBaseUrlFromEnv',
+    value: function getBaseUrlFromEnv(environment) {
+      return this.envs[environment];
     }
   }]);
   return EnvironmentProvider;
