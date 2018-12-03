@@ -4067,13 +4067,29 @@ var Tenant = function () {
     /**
      * Get the users associated to a tenant by any role
      * @param {string} tenantId
+     * @param {number} [params.page=0] The number of the result page starting with 0
+     * @param {number} [params.pageSize=10] The number of result per page. Default is 10
      * @returns {Promise}
      */
 
   }, {
     key: 'getTenantUsers',
-    value: function getTenantUsers(tenantId) {
-      return _apiService2.default.call('/tenants/' + tenantId + '/users');
+    value: function getTenantUsers(tenantId, params) {
+      var urlParams = new URLSearchParams(params);
+      return _apiService2.default.call('/tenants/' + tenantId + '/users?' + urlParams.toString());
+    }
+
+    /**
+     * Delete (remove) a user from a tenant
+     * @param {string} tenantId
+     * @param {string} userId
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'deleteTenantUser',
+    value: function deleteTenantUser(tenantId, userId) {
+      return _apiService2.default.call('/tenants/' + tenantId + '/users/' + userId, 'DELETE');
     }
 
     /**
@@ -4106,13 +4122,16 @@ var Tenant = function () {
     /**
      * Get tenant invites
      * @param {string} tenantId
+     * @param {number} [params.page=0] The number of the result page starting with 0
+     * @param {number} [params.pageSize=10] The number of result per page. Default is 10
      * @returns {Promise}
      */
 
   }, {
     key: 'getInvites',
-    value: function getInvites(tenantId) {
-      return _apiService2.default.call('/tenants/' + tenantId + '/invites');
+    value: function getInvites(tenantId, params) {
+      var urlParams = new URLSearchParams(params);
+      return _apiService2.default.call('/tenants/' + tenantId + '/invites?' + urlParams.toString());
     }
 
     /**

@@ -38,10 +38,23 @@ export default class Tenant {
   /**
    * Get the users associated to a tenant by any role
    * @param {string} tenantId
+   * @param {number} [params.page=0] The number of the result page starting with 0
+   * @param {number} [params.pageSize=10] The number of result per page. Default is 10
    * @returns {Promise}
    */
-  static getTenantUsers(tenantId) {
-    return ApiService.call(`/tenants/${tenantId}/users`);
+  static getTenantUsers(tenantId, params) {
+    const urlParams = new URLSearchParams(params);
+    return ApiService.call(`/tenants/${tenantId}/users?${urlParams.toString()}`);
+  }
+
+  /**
+   * Delete (remove) a user from a tenant
+   * @param {string} tenantId
+   * @param {string} userId
+   * @returns {Promise}
+   */
+  static deleteTenantUser(tenantId, userId) {
+    return ApiService.call(`/tenants/${tenantId}/users/${userId}`, 'DELETE');
   }
 
   /**
@@ -68,10 +81,13 @@ export default class Tenant {
   /**
    * Get tenant invites
    * @param {string} tenantId
+   * @param {number} [params.page=0] The number of the result page starting with 0
+   * @param {number} [params.pageSize=10] The number of result per page. Default is 10
    * @returns {Promise}
    */
-  static getInvites(tenantId) {
-    return ApiService.call(`/tenants/${tenantId}/invites`);
+  static getInvites(tenantId, params) {
+    const urlParams = new URLSearchParams(params);
+    return ApiService.call(`/tenants/${tenantId}/invites?${urlParams.toString()}`);
   }
 
   /**

@@ -27,12 +27,25 @@ describe('Tenant module', () => {
 
   test('getTenantUsers calls ApiService', () =>
     Tenant.getTenantUsers('1').then(() =>
-      expect(ApiService.call).toBeCalledWith('/tenants/1/users'),
+      expect(ApiService.call).toBeCalledWith('/tenants/1/users?'),
+    ));
+
+    test('getTenantUsers calls ApiService with correct paging params', () =>
+    Tenant.getTenantUsers('1', {
+      page: 2,
+      pageSize: 20,
+    }).then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/users?page=2&pageSize=20'),
     ));
 
   test('deleteTenant calls ApiService', () =>
     Tenant.deleteTenant('1').then(() =>
       expect(ApiService.call).toBeCalledWith('/tenants/1', 'DELETE'),
+    ));
+
+  test('deleteTenantUser calls ApiService', () =>
+    Tenant.deleteTenantUser('1', '2').then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/users/2', 'DELETE'),
     ));
 
   test('createInvite calls ApiService', () =>
@@ -42,9 +55,17 @@ describe('Tenant module', () => {
 
   test('getInvites calls ApiService', () =>
     Tenant.getInvites('1').then(() =>
-      expect(ApiService.call).toBeCalledWith('/tenants/1/invites'),
+      expect(ApiService.call).toBeCalledWith('/tenants/1/invites?'),
     ));
-  
+
+  test('getInvites calls ApiService with correct paging params', () =>
+    Tenant.getInvites('1', {
+      page: 2,
+      pageSize: 20,
+    }).then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/invites?page=2&pageSize=20'),
+    ));
+
   test('deleteInvite calls ApiService', () =>
     Tenant.deleteInvite('1', '2').then(() =>
       expect(ApiService.call).toBeCalledWith('/tenants/1/invites/2', 'DELETE'),
