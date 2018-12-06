@@ -3280,7 +3280,7 @@ var K,q,W,V=function(){var e=new RegExp('(?:false|true|null|[\\{\\}\\[\\]]|(?:-?
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Certificate = exports.Event = exports.Timeseries = exports.DeviceType = exports.Device = exports.Client = exports.Tenant = undefined;
+exports.Certificate = exports.Event = exports.Timeseries = exports.DeviceType = exports.Device = exports.Client = exports.Tenant = exports.User = undefined;
 
 var _classCallCheck2 = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
 
@@ -3299,6 +3299,10 @@ var _userManagerProvider2 = _interopRequireDefault(_userManagerProvider);
 var _environmentProvider = __webpack_require__(/*! ./tools/environmentProvider */ "./src/tools/environmentProvider.js");
 
 var _environmentProvider2 = _interopRequireDefault(_environmentProvider);
+
+var _user = __webpack_require__(/*! ./modules/user */ "./src/modules/user.js");
+
+var _user2 = _interopRequireDefault(_user);
 
 var _tenant = __webpack_require__(/*! ./modules/tenant */ "./src/modules/tenant.js");
 
@@ -3330,6 +3334,7 @@ var _deviceType2 = _interopRequireDefault(_deviceType);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+exports.User = _user2.default;
 exports.Tenant = _tenant2.default;
 exports.Client = _client2.default;
 exports.Device = _device2.default;
@@ -4290,6 +4295,100 @@ var Timeseries = function () {
 }();
 
 exports.default = Timeseries;
+
+/***/ }),
+
+/***/ "./src/modules/user.js":
+/*!*****************************!*\
+  !*** ./src/modules/user.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(/*! babel-runtime/helpers/createClass */ "./node_modules/babel-runtime/helpers/createClass.js");
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _apiService = __webpack_require__(/*! ../tools/apiService */ "./src/tools/apiService.js");
+
+var _apiService2 = _interopRequireDefault(_apiService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Methods for user operations
+ */
+var User = function () {
+  function User() {
+    (0, _classCallCheck3.default)(this, User);
+  }
+
+  (0, _createClass3.default)(User, null, [{
+    key: 'getUser',
+
+
+    /**
+     * Gets user information
+     * @param {string} userId
+     * @returns {Promise}
+     */
+    value: function getUser(userId) {
+      return _apiService2.default.call('/users/' + userId);
+    }
+
+    /**
+     * Gets user invites
+     * @param {string} userId
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'getUserInvites',
+    value: function getUserInvites(userId) {
+      return _apiService2.default.call('/users/' + userId + '/invites');
+    }
+
+    /**
+     * Accept a user invite
+     * @param {string} userId
+     * @param {string} inviteId
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'acceptUserInvite',
+    value: function acceptUserInvite(userId, inviteId) {
+      return _apiService2.default.call('/users/' + userId + '/invites/' + inviteId, 'PATCH', { status: 'accepted' });
+    }
+
+    /**
+     * Decline a user invite
+     * @param {string} userId
+     * @param {string} inviteId
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'declineUserInvite',
+    value: function declineUserInvite(userId, inviteId) {
+      return _apiService2.default.call('/users/' + userId + '/invites/' + inviteId, 'PATCH', { status: 'declined' });
+    }
+  }]);
+  return User;
+}();
+
+exports.default = User;
 
 /***/ }),
 

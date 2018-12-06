@@ -1,6 +1,7 @@
 import { UserManager } from 'oidc-client';
 import userManagerProvider from './tools/userManagerProvider';
 import environmentProvider from './tools/environmentProvider';
+import User from './modules/user';
 import Tenant from './modules/tenant';
 import Client from './modules/client';
 import Device from './modules/device';
@@ -9,7 +10,7 @@ import Event from './modules/event';
 import Certificate from './modules/certificate';
 import DeviceType from './modules/deviceType';
 
-export { Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate };
+export { User, Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate };
 
 const AUTH_CALLBACK_PATH = '/auth-callback';
 
