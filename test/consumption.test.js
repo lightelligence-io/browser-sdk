@@ -5,29 +5,34 @@ jest.mock('../src/tools/apiService', () => ({
   call: jest.fn().mockResolvedValue({}),
 }));
 
+
+const startTime = '2018-11-01T00:00:00.000Z';
+const endTime = '2018-11-01T00:00:00.000Z';
+
+
 describe('Client module', () => {
 
   test('getSummary calls ApiService', () => {
     const params = {
-      startTime: '2018-11-01T00:00:00.000Z',
-      endTime: '2018-12-01T00:00:00.000Z',
+      startTime,
+      endTime,
     };
     return Consumption.getSummary(params).then(() =>
       expect(ApiService.call).toBeCalledWith(
-        '/consumption/summary?startTime=2018-11-01T00%3A00%3A00.000Z&endTime=2018-12-01T00%3A00%3A00.000Z'
+        `/consumption/summary?startTime=${encodeURIComponent(params.startTime)}&endTime=${encodeURIComponent(params.endTime) }`
       )
     );
   });
 
   test('getSummary transforms array of unit into valid query', () => {
     const params = {
-      startTime: '2018-11-01T00:00:00.000Z',
-      endTime: '2018-12-01T00:00:00.000Z',
+      startTime,
+      endTime,
       unit: ['devices', 'users'],
     };
     return Consumption.getSummary(params).then(() =>
       expect(ApiService.call).toBeCalledWith(
-        '/consumption/summary?startTime=2018-11-01T00%3A00%3A00.000Z&endTime=2018-12-01T00%3A00%3A00.000Z&unit=devices&unit=users'
+        `/consumption/summary?startTime=${encodeURIComponent(params.startTime)}&endTime=${encodeURIComponent(params.endTime)}&unit=devices&unit=users`
       )
     );
   });
