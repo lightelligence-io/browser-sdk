@@ -9,8 +9,9 @@ import Timeseries from './modules/timeseries';
 import Event from './modules/event';
 import Certificate from './modules/certificate';
 import DeviceType from './modules/deviceType';
+import Consumption from './modules/consumption';
 
-export { User, Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate };
+export { User, Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate, Consumption };
 
 const AUTH_CALLBACK_PATH = '/auth-callback';
 

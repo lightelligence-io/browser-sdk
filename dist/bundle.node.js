@@ -3280,7 +3280,7 @@ var K,q,W,V=function(){var e=new RegExp('(?:false|true|null|[\\{\\}\\[\\]]|(?:-?
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Certificate = exports.Event = exports.Timeseries = exports.DeviceType = exports.Device = exports.Client = exports.Tenant = exports.User = undefined;
+exports.Consumption = exports.Certificate = exports.Event = exports.Timeseries = exports.DeviceType = exports.Device = exports.Client = exports.Tenant = exports.User = undefined;
 
 var _classCallCheck2 = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
 
@@ -3332,6 +3332,10 @@ var _deviceType = __webpack_require__(/*! ./modules/deviceType */ "./src/modules
 
 var _deviceType2 = _interopRequireDefault(_deviceType);
 
+var _consumption = __webpack_require__(/*! ./modules/consumption */ "./src/modules/consumption.js");
+
+var _consumption2 = _interopRequireDefault(_consumption);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.User = _user2.default;
@@ -3342,6 +3346,7 @@ exports.DeviceType = _deviceType2.default;
 exports.Timeseries = _timeseries2.default;
 exports.Event = _event2.default;
 exports.Certificate = _certificate2.default;
+exports.Consumption = _consumption2.default;
 
 
 var AUTH_CALLBACK_PATH = '/auth-callback';
@@ -3632,6 +3637,79 @@ var Client = function () {
 }();
 
 exports.default = Client;
+
+/***/ }),
+
+/***/ "./src/modules/consumption.js":
+/*!************************************!*\
+  !*** ./src/modules/consumption.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(/*! babel-runtime/helpers/createClass */ "./node_modules/babel-runtime/helpers/createClass.js");
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _apiService = __webpack_require__(/*! ../tools/apiService */ "./src/tools/apiService.js");
+
+var _apiService2 = _interopRequireDefault(_apiService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Methods for client operations
+ */
+var Consumption = function () {
+  function Consumption() {
+    (0, _classCallCheck3.default)(this, Consumption);
+  }
+
+  (0, _createClass3.default)(Consumption, null, [{
+    key: "getSummary",
+
+    /**
+     * Get summary of consumption during period.
+     *
+     * @param {object} params
+     * @param {string} [params.startTime] start time for the requested summary
+     * @param {string} [params.endTime] end time for the requested summary
+     * @param {array} [params.unit] the units to return, available values: devices, storageSamples, users
+     *
+     * @returns {Promise}
+     */
+    value: function getSummary(params) {
+
+      var urlParams = new URLSearchParams({
+        startTime: params.startTime,
+        endTime: params.endTime
+      });
+
+      // append unit array to search params
+      if (params && params.unit) {
+        params.unit.forEach(function (value) {
+          urlParams.append("unit", value);
+        });
+      }
+
+      return _apiService2.default.call("/consumption/summary?" + urlParams.toString());
+    }
+  }]);
+  return Consumption;
+}();
+
+exports.default = Consumption;
 
 /***/ }),
 
