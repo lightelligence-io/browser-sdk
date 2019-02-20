@@ -53,6 +53,9 @@ describe('Device module', () => {
   test('getState calls ApiService', () =>
     Device.getState('1').then(() => expect(ApiService.call).toBeCalledWith('/devices/1/state')));
 
+  test('getLastDiagnostics calls ApiService', () =>
+    Device.getLastDiagnostics('1').then(() => expect(ApiService.call).toBeCalledWith('/devices/1/last-diagnostics')));
+
   test('pushData calls ApiService', () =>
     Device.pushData('1', { name: 'abc' }).then(() =>
       expect(ApiService.call).toBeCalledWith('/data-ingest', 'POST', {

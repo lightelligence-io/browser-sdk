@@ -3677,7 +3677,7 @@ var Consumption = function () {
   }
 
   (0, _createClass3.default)(Consumption, null, [{
-    key: "getSummary",
+    key: 'getSummary',
 
     /**
      * Get summary of consumption during period.
@@ -3690,7 +3690,6 @@ var Consumption = function () {
      * @returns {Promise}
      */
     value: function getSummary(params) {
-
       var urlParams = new URLSearchParams({
         startTime: params.startTime,
         endTime: params.endTime
@@ -3699,11 +3698,11 @@ var Consumption = function () {
       // append unit array to search params
       if (params && params.unit) {
         params.unit.forEach(function (value) {
-          urlParams.append("unit", value);
+          urlParams.append('unit', value);
         });
       }
 
-      return _apiService2.default.call("/consumption/summary?" + urlParams.toString());
+      return _apiService2.default.call('/consumption/summary?' + urlParams.toString());
     }
   }]);
   return Consumption;
@@ -3854,6 +3853,18 @@ var Device = function () {
     key: 'getState',
     value: function getState(deviceId) {
       return _apiService2.default.call('/devices/' + deviceId + '/state');
+    }
+
+    /**
+     * List device diagnostic messages sorted descending by time for a specific device for the last hour to simplify debugging.
+     * @param {string} deviceId
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'getLastDiagnostics',
+    value: function getLastDiagnostics(deviceId) {
+      return _apiService2.default.call('/devices/' + deviceId + '/last-diagnostics');
     }
 
     /**

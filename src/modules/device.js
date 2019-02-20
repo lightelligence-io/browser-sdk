@@ -84,6 +84,15 @@ export default class Device {
   }
 
   /**
+   * List device diagnostic messages sorted descending by time for a specific device for the last hour to simplify debugging.
+   * @param {string} deviceId
+   * @returns {Promise}
+   */
+  static getLastDiagnostics(deviceId) {
+      return ApiService.call(`/devices/${deviceId}/last-diagnostics`);
+  }
+
+  /**
    * Push data to device
    * @param {string} deviceId
    * @param {object} data
