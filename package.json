@@ -1,7 +1,7 @@
 {
-  "name": "lightelligence-javascript-sdk",
+  "name": "@lightelligence/javascript-sdk",
   "version": "0.1.0",
-  "description": "javascript SDK for lightelligence platform",
+  "description": "javascript SDK for the lightelligence-platform",
   "main": "dist/bundle.web.js",
   "scripts": {
     "start": "webpack --config webpack.config.js --watch true",
@@ -23,9 +23,7 @@
     "js",
     "sdk"
   ],
-  "author": "Roman Makovyak",
-  "license": "MIT",
-  "homepage": "https://bitbucket.org/lightelligence/javascript-sdk#readme",
+  "license": "UNLICENSED",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-jest": "^23.4.0",

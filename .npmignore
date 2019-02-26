@@ -1,0 +1,12 @@
+/node_modules
+/lightelligence_theme
+/coverage
+/Dockerfile
+/docs
+nginx.conf
+bitbucket-pipelines.yml
+.npmrc
+.nvmrc
+
+# Log files
+npm-debug.log*
