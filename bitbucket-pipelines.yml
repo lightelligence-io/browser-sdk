@@ -1,6 +1,25 @@
 image: node:carbon
+
+definitions:
+  steps:
+
+    - step: &Audit-Step
+        name: Audit NPM vulnerabilities
+        image:
+          name: oltregistry.azurecr.io/tools/npm-audit-ci:latest
+          username: $REGISTRY_USER
+          password: $REGISTRY_PASSWORD
+        script:
+          - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+          - npm install
+          - /app/bin/npm-audit-ci -m
+        caches:
+          - node
+
 pipelines:
+
   default:
+    - step: *Audit-Step
     - step:
         name: Test
         script:
@@ -32,6 +51,7 @@ pipelines:
           - node
   branches:
     master:
+      - step: *Audit-Step
       - step:
           name: Build documentation
           script:
@@ -46,11 +66,3 @@ pipelines:
           caches:
             - docker
             - node
-      - step:
-          name: Deploy documentation
-          deployment: production
-          script:
-            - export DOCKER_IMAGE_TAG=$DOCKER_REPO/${APP_NAME}:${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}
-            - az login -u $AZ_USER -p $AZ_PASSWORD
-            - az webapp config container set -i ${DOCKER_IMAGE_TAG} -r https://$DOCKER_REPO  --name $APP_NAME --resource-group oih-temp-roman
-          image: microsoft/azure-cli:2.0.34
