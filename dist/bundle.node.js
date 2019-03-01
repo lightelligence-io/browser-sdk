@@ -4439,13 +4439,17 @@ var User = function () {
     /**
      * Gets user invites
      * @param {string} userId
+     * @param {object} params search params
+     * @param {number} [params.page=0] The number of the result page starting with 0
+     * @param {number} [params.pageSize=10] The number of result per page
      * @returns {Promise}
      */
 
   }, {
     key: 'getUserInvites',
-    value: function getUserInvites(userId) {
-      return _apiService2.default.call('/users/' + userId + '/invites');
+    value: function getUserInvites(userId, params) {
+      var urlParams = new URLSearchParams(params);
+      return _apiService2.default.call('/users/' + userId + '/invites?' + urlParams.toString());
     }
 
     /**
