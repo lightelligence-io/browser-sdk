@@ -3349,7 +3349,7 @@ exports.Certificate = _certificate2.default;
 exports.Consumption = _consumption2.default;
 
 
-var AUTH_CALLBACK_PATH = '/auth-callback';
+var AUTH_CALLBACK_DEFAULT_PATH = '/auth-callback';
 
 /**
  * Main browser sdk module
@@ -3359,6 +3359,8 @@ var AUTH_CALLBACK_PATH = '/auth-callback';
  * avalaible options: 'dev', 'int', 'preview', 'prod'
  * @param {array} [options.scope = ['openid', 'profile', 'email', 'offline_access']] - openid scope
  * @param {string} options.clientId - registered app client id
+ * @param {string} options.authCallback - configurable authCallback path, the
+ * signin redirect after this path is called is automatically handled by this sdk.
  */
 
 var BrowserSDK = function () {
@@ -3366,7 +3368,9 @@ var BrowserSDK = function () {
     var environment = _ref.environment,
         clientId = _ref.clientId,
         _ref$scope = _ref.scope,
-        scope = _ref$scope === undefined ? ['openid', 'profile', 'email', 'offline_access'] : _ref$scope;
+        scope = _ref$scope === undefined ? ['openid', 'profile', 'email', 'offline_access'] : _ref$scope,
+        _ref$authCallback = _ref.authCallback,
+        authCallback = _ref$authCallback === undefined ? AUTH_CALLBACK_DEFAULT_PATH : _ref$authCallback;
     (0, _classCallCheck3.default)(this, BrowserSDK);
 
     if (!environment || !clientId) {
@@ -3374,18 +3378,19 @@ var BrowserSDK = function () {
     }
 
     var baseUrl = _environmentProvider2.default.getBaseUrlFromEnv(environment);
+    this.authCallback = authCallback;
 
     this.manager = new _oidcClient.UserManager({
       authority: 'https://id.' + baseUrl + '/v1/id/auth/realms/olt',
       client_id: clientId,
       scope: scope.join(' '),
       response_type: 'id_token token',
-      redirect_uri: '' + window.location.origin + AUTH_CALLBACK_PATH,
+      redirect_uri: '' + window.location.origin + authCallback,
       post_logout_redirect_uri: window.location.origin
     });
 
     // execute this code only on redirect from token issuer
-    if (window.location.pathname === AUTH_CALLBACK_PATH) {
+    if (window.location.pathname === authCallback) {
       this.manager.signinRedirectCallback().then(function () {
         window.location = window.location.origin;
       }).catch(function (e) {
@@ -3417,7 +3422,7 @@ var BrowserSDK = function () {
 
       return this.manager.getUser().then(function (user) {
         // ignore this code only on redirect from token issuer
-        if (!user && window.location.pathname !== AUTH_CALLBACK_PATH) {
+        if (!user && window.location.pathname !== _this.authCallback) {
           _this.manager.signinRedirect({ login_hint: loginHint });
         }
       });
