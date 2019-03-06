@@ -11,58 +11,99 @@ definitions:
           password: $REGISTRY_PASSWORD
         script:
           - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-          - npm install
+          - npm ci
           - /app/bin/npm-audit-ci -m
         caches:
+          - node
+
+    - step: &Build-Step
+        name: Build
+        script:
+          - npm ci
+          - npm run build
+        caches:
+          - node
+        artifacts:
+          - dist/**
+
+    - step: &Test-Step
+        name: Test
+        script:
+          - npm ci
+          - npm run lint
+          - npm run test
+        caches:
+          - node
+
+    - step: &License-Step
+        name: License report
+        script:
+          - npm ci
+          - npm run license-report
+        caches:
+          - node
+
+    - step: &Build-Docs-Container
+        name: Build docs container
+        script:
+          - npm ci
+          - npm run build:docs
+          - docker build -t ${DOCKER_REPO}/${BITBUCKET_REPO_SLUG}:${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER} .
+          - docker save --output docs-image.docker ${DOCKER_REPO}/${BITBUCKET_REPO_SLUG}:${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}
+        services:
+          - docker
+        caches:
+          - docker
+          - node
+        artifacts:
+          - docs-image.docker
+
+    - step: &Upload-Docs-Container
+        name: Upload docs container
+        script:
+          - docker load --input ./docs-image.docker
+          - echo ${REGISTRY_PASSWORD} | docker login --username ${REGISTRY_USER} --password-stdin ${DOCKER_REPO}
+          - docker push ${DOCKER_REPO}/${BITBUCKET_REPO_SLUG}:${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}
+        services:
+          - docker
+        caches:
+          - docker
           - node
 
 pipelines:
 
   default:
     - step: *Audit-Step
-    - step:
-        name: Test
-        script:
-          - npm install
-          - npm run lint
-          - npm run test
-        caches:
-          - node
-    - step:
-        name: License report
-        script:
-          - npm install
-          - npm run license-report
-        caches:
-          - node
-    - step:
-        name: Build documentation
-        script:
-          - npm install
-          - npm run documentation
-        caches:
-          - node
-    - step:
-        name: Build
-        script:
-          - npm install
-          - npm run build
-        caches:
-          - node
+    - step: *Build-Step
+    - step: *Test-Step
+    - step: *License-Step
+    - step: *Build-Docs-Container
+
+  tags:
+    '*.*.*':
+      - step: *Audit-Step
+      - step: *Build-Step
+      - step: *Test-Step
+      - step: *License-Step
+      - step: *Build-Docs-Container
+      - step:
+          name: Publish package on NPM
+          script:
+            - npm ci
+            - npm build
+            - npm version --no-git-tag-version ${BITBUCKET_TAG}
+            - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN_PUBLISH}" > .npmrc
+            - npm publish
+          caches:
+            - node
+#      - step: *Upload-Docs-Container
+
   branches:
     master:
       - step: *Audit-Step
-      - step:
-          name: Build documentation
-          script:
-            - export DOCKER_IMAGE_TAG=$DOCKER_REPO/${APP_NAME}:${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}
-            - npm install
-            - npm run documentation
-            - docker build -t ${DOCKER_IMAGE_TAG} .
-            - docker login -u $DOCKER_REPO_NAME -p $DOCKER_REPO_PASSWORD $DOCKER_REPO
-            - docker push ${DOCKER_IMAGE_TAG}
-          services:
-            - docker
-          caches:
-            - docker
-            - node
+      - step: *Build-Step
+      - step: *Test-Step
+      - step: *License-Step
+      - step: *Build-Docs-Container
+#      - step: *Upload-Docs-Container
+
