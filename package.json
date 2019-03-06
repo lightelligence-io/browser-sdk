@@ -7,7 +7,7 @@
     "start": "webpack --config webpack.config.js --watch true",
     "test": "jest --coverage",
     "lint": "eslint src/** test/**",
-    "version": "[[ -n ${BITBUCKET_TAG} ]] && echo ${BITBUCKET_TAG} || ( [[ -n ${BITBUCKET_COMMIT} ]] && echo ${BITBUCKET_COMMIT} || echo 'current' )",
+    "version": "node -pe \"process.env.BITBUCKET_TAG || process.env.BITBUCKET_COMMIT || 'current'\"",
     "build:docs": "documentation build src/** -f html -o docs --theme lightelligence_theme --project-version $(npm run -s version)",
     "build": "rm -rf dist && webpack --config webpack.config.js",
     "license-report": "legally",
