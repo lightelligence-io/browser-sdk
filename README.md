@@ -1,10 +1,10 @@
 # javascript-sdk
 
-[User documentation](https://lightelligence-javascript-sdk.azurewebsites.net/)
+[User documentation](https://developers.lightelligence.io/browser-sdk/)
 
-Provides tools to make app development with lightelligence platform faster and easier. Contains of authorization for node and browser environments, wrappers around all api endpoints, util methods.
-
-NOTE: currently you _need_ to commit dist folder in order for sdk to work. We are working on a better solution.
+Provides tools to make app development with lightelligence platform faster and easier. 
+Contains of authorization for node and browser environments, wrappers around all api 
+endpoints, util methods.
 
 ##Dependencies
 
@@ -42,7 +42,7 @@ npm run build
 available under `docs/index.html`
 
 ```
-npm run documentation
+npm run build:docs
 ```
 
 ## Deployment
@@ -50,6 +50,10 @@ npm run documentation
 Library is published to npm via bitbucket pipelines job.
 
 ## Access
+
+```
+npm install @lightelligence/browser-sdk
+```
 
 TODO: link to npm package
 

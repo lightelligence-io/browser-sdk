@@ -96,7 +96,7 @@ pipelines:
             - npm publish
           caches:
             - node
-#      - step: *Upload-Docs-Container
+      - step: *Upload-Docs-Container
 
   branches:
     master:
@@ -105,5 +105,5 @@ pipelines:
       - step: *Test-Step
       - step: *License-Step
       - step: *Build-Docs-Container
-#      - step: *Upload-Docs-Container
+      - step: *Upload-Docs-Container
 

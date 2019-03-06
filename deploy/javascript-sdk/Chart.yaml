@@ -1,0 +1,11 @@
+apiVersion: v1
+description: Lightelligence Browser SDK
+name: javascript-sdk
+version: 0.1.0
+maintainers:
+  - name: Ivan Drinchev
+    email: drinchev+osram@gmail.com
+  - name: Jonathan Stoye
+    email: J.Stoye@osram.com
+  - name: Heinz Hölzer
+    email: heinz.hoelzer@db-n.com

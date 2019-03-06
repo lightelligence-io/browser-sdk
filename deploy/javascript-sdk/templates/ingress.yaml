@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: javascript-sdk
+  labels:
+    buildingBlock: {{ .Values.labels.buildingBlock }}
+    component: {{ .Values.labels.component }}
+  annotations:
+    kubernetes.io/ingress.class: default
+spec:
+  rules:
+    - host: {{ .Values.hostname }}
+      http:
+        paths:
+          - path: /browser-sdk
+            backend:
+              serviceName: javascript-sdk
+              servicePort: 8080
+  tls:
+    - hosts:
+        - {{ .Values.hostname }}
+      secretName: {{ .Values.cert.secretName }}

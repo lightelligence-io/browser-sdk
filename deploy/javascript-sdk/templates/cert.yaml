@@ -1,0 +1,23 @@
+{{- if .Values.cert.request }}
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: javascript-sdk-tls
+  labels:
+    buildingBlock: {{ .Values.labels.buildingBlock }}
+    component: {{ .Values.labels.component }}
+spec:
+  secretName: {{ .Values.cert.secretName }}
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ .Values.hostname }}
+  dnsNames:
+    - {{ .Values.hostname }}
+  acme:
+    config:
+      - http01:
+          ingressClass: default
+        domains:
+          - {{ .Values.hostname }}
+  {{ end }}

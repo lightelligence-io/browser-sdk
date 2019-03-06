@@ -1,0 +1,10 @@
+
+labels:
+  buildingBlock: javascript-sdk
+  component: javascript-sdk
+
+replicaCount: 1
+
+cert:
+  request: true
+  secretName: javascript-sdk-tls

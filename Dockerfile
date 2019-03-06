@@ -1,7 +1,8 @@
-FROM nginx:stable-alpine
+FROM nginxinc/nginx-unprivileged:stable
 
-RUN apk update && apk add bash
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY ./docs /usr/share/nginx/html
+## Copy our default nginx config
+COPY deploy/javascript-sdk/nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+# Copy assets over
+# NOTE: These have to be built first with "npm run build"
+COPY docs /usr/share/nginx/html/browser-sdk

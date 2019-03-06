@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javascript-sdk
+  labels:
+    buildingBlock: {{ .Values.labels.buildingBlock }}
+    component: {{ .Values.labels.component }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      buildingBlock: {{ .Values.labels.buildingBlock }}
+      component: {{ .Values.labels.component }}
+  template:
+    metadata:
+      labels:
+        buildingBlock: {{ .Values.labels.buildingBlock }}
+        component: {{ .Values.labels.component }}
+    spec:
+      containers:
+        - name:  javascript-sdk
+          image: "oltregistry.azurecr.io/javascript-sdk:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /index.html
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /index.html
+              port: 8080
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "30Mi"
