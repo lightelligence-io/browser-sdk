@@ -3,8 +3,8 @@ image: node:carbon
 definitions:
   steps:
 
-    - step: &Audit-Step
-        name: Audit NPM vulnerabilities
+    - step: &Audit-And-License-Step
+        name: Audit NPM vulnerabilities and check licenses
         image:
           name: oltregistry.azurecr.io/tools/npm-audit-ci:latest
           username: $REGISTRY_USER
@@ -12,6 +12,7 @@ definitions:
         script:
           - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
           - npm ci
+          - npm run license-report
           - /app/bin/npm-audit-ci -m
         caches:
           - node
@@ -32,14 +33,6 @@ definitions:
           - npm ci
           - npm run lint
           - npm run test
-        caches:
-          - node
-
-    - step: &License-Step
-        name: License report
-        script:
-          - npm ci
-          - npm run license-report
         caches:
           - node
 
@@ -79,18 +72,16 @@ definitions:
 pipelines:
 
   default:
-    - step: *Audit-Step
+    - step: *Audit-And-License-Step
     - step: *Build-Step
     - step: *Test-Step
-    - step: *License-Step
     - step: *Build-Docs-Container
 
   tags:
     '*.*.*':
-      - step: *Audit-Step
+      - step: *Audit-And-License-Step
       - step: *Build-Step
       - step: *Test-Step
-      - step: *License-Step
       - step: *Build-Docs-Container
       - step:
           name: Publish package on NPM
@@ -149,10 +140,9 @@ pipelines:
 
   branches:
     master:
-      - step: *Audit-Step
+      - step: *Audit-And-License-Step
       - step: *Build-Step
       - step: *Test-Step
-      - step: *License-Step
       - step: *Build-Docs-Container
       - step: *Upload-Docs-Container
       - step: *Lint-Helm-Config
