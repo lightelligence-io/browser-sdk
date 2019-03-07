@@ -70,6 +70,12 @@ definitions:
           - docker
           - node
 
+    - step: &Lint-Helm-Config
+        name: Lint the helm config
+        script:
+          - helm lint -f deploy/${BITBUCKET_REPO_SLUG}/values-dev.yaml --set image.tag=LINT deploy/${BITBUCKET_REPO_SLUG}/
+        image: dtzar/helm-kubectl:2.9.0
+
 pipelines:
 
   default:
@@ -97,6 +103,49 @@ pipelines:
           caches:
             - node
       - step: *Upload-Docs-Container
+      - step: *Lint-Helm-Config
+      - step:
+          name: Deploy docs to int
+          image: dtzar/helm-kubectl:2.9.0
+          deployment: test
+          trigger: manual
+          script:
+            # Configure kubectl to give it access to the int cluster
+            - echo $NINT_K8S_CLUSTER_CA | base64 -d > ca.pem
+            - kubectl config set-cluster my-cluster --certificate-authority=ca.pem --server=${NINT_K8S_CLUSTER_URL} --embed-certs
+            - kubectl config set-context my-context --cluster=my-cluster --user=${NINT_K8S_CLUSTER_USER}
+            - kubectl config set-credentials ${NINT_K8S_CLUSTER_USER} --token=${NINT_K8S_CLUSTER_TOKEN}
+            - kubectl config use-context my-context
+            # Update int cluster to the the image from this build
+            - helm upgrade --namespace portal -i ${BITBUCKET_REPO_SLUG} deploy/${BITBUCKET_REPO_SLUG}/ --set image.tag="${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}" -f deploy/${BITBUCKET_REPO_SLUG}/values-int.yaml
+      - step:
+          name: Deploy docs to preview
+          image: dtzar/helm-kubectl:2.9.0
+          deployment: staging
+          trigger: manual
+          script:
+            # Configure kubectl to give it access to the preview cluster
+            - echo $NPREVIEW_K8S_CLUSTER_CA | base64 -d > ca.pem
+            - kubectl config set-cluster my-cluster --certificate-authority=ca.pem --server=${NPREVIEW_K8S_CLUSTER_URL} --embed-certs
+            - kubectl config set-context my-context --cluster=my-cluster --user=${NPREVIEW_K8S_CLUSTER_USER}
+            - kubectl config set-credentials ${NPREVIEW_K8S_CLUSTER_USER} --token=${NPREVIEW_K8S_CLUSTER_TOKEN}
+            - kubectl config use-context my-context
+            # Update preview cluster to the the image from this build
+            - helm upgrade --namespace portal -i ${BITBUCKET_REPO_SLUG} deploy/${BITBUCKET_REPO_SLUG}/ --set image.tag="${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}" -f deploy/${BITBUCKET_REPO_SLUG}/values-preview.yaml
+      - step:
+          name: Deploy docs to production
+          image: dtzar/helm-kubectl:2.9.0
+          deployment: production
+          trigger: manual
+          script:
+            # Configure kubectl to give it access to the production cluster
+            - echo $PROD_K8S_CLUSTER_CA | base64 -d > ca.pem
+            - kubectl config set-cluster my-cluster --certificate-authority=ca.pem --server=${PROD_K8S_CLUSTER_URL} --embed-certs
+            - kubectl config set-context my-context --cluster=my-cluster --user=${PROD_K8S_CLUSTER_USER}
+            - kubectl config set-credentials ${PROD_K8S_CLUSTER_USER} --token=${PROD_K8S_CLUSTER_TOKEN}
+            - kubectl config use-context my-context
+            # Update production cluster to the the image from this build
+            - helm upgrade --namespace portal -i ${BITBUCKET_REPO_SLUG} deploy/${BITBUCKET_REPO_SLUG}/ --set image.tag="${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}" -f deploy/${BITBUCKET_REPO_SLUG}/values-prod.yaml
 
   branches:
     master:
@@ -106,4 +155,18 @@ pipelines:
       - step: *License-Step
       - step: *Build-Docs-Container
       - step: *Upload-Docs-Container
+      - step: *Lint-Helm-Config
+      - step:
+          name: Deploy docs to dev
+          script:
+            # Configure kubectl to give it access to the dev cluster
+            - echo $NDEV_K8S_CLUSTER_CA | base64 -d > ca.pem
+            - kubectl config set-cluster my-cluster --certificate-authority=ca.pem --server=${NDEV_K8S_CLUSTER_URL} --embed-certs
+            - kubectl config set-context my-context --cluster=my-cluster --user=${NDEV_K8S_CLUSTER_USER}
+            - kubectl config set-credentials ${NDEV_K8S_CLUSTER_USER} --token=${NDEV_K8S_CLUSTER_TOKEN}
+            - kubectl config use-context my-context
+            # Update NDEV cluster to the the image from this build
+            - helm upgrade --namespace portal -i ${BITBUCKET_REPO_SLUG} deploy/${BITBUCKET_REPO_SLUG}/ --set image.tag="${BITBUCKET_BRANCH}_${BITBUCKET_BUILD_NUMBER}" -f deploy/${BITBUCKET_REPO_SLUG}/values-dev.yaml
+          image: dtzar/helm-kubectl:2.9.0
+
 
