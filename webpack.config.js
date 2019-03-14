@@ -1,6 +1,4 @@
 const path = require("path");
-const spreadPlugin = require("babel-plugin-transform-object-rest-spread");
-const transformRuntimePlugin = require("babel-plugin-transform-runtime");
 
 const baseConfig = {
   entry: "./src/index-web.js",
@@ -18,8 +16,8 @@ const baseConfig = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["env"],
-            plugins: [spreadPlugin, transformRuntimePlugin]
+            presets: ["@babel/preset-env"],
+            plugins: ["@babel/plugin-proposal-object-rest-spread", "@babel/plugin-transform-runtime"]
           }
         }
       }
