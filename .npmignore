@@ -3,11 +3,15 @@
 /coverage
 /Dockerfile
 /docs
-nginx.conf
-bitbucket-pipelines.yml
-.npmrc
-.nvmrc
-docs-image.docker
+/deploy
+/.eslintrc
+/babel.config.js
+/webpack.config.js
+/.prettierrc
+/bitbucket-pipelines.yml
+/.npmrc
+/.nvmrc
+/docs-image.docker
 
 # Log files
 npm-debug.log*
