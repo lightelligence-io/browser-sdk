@@ -103,6 +103,7 @@ export default class Tenant {
 
   /**
    * Gets roles of tenant
+   * @deprecated Use {@link Role.getRoles}
    * @param {string} tenantId
    * @returns {Promise}
    */
@@ -125,11 +126,11 @@ export default class Tenant {
    * - roleNames will replace the current roles.
    * @param {string} tenantId
    * @param {string} userId
-   * @param {{ roleNames: array<string> }} put - roles to update to. Ex: ['reader']
+   * @param {{ roles: array<{ id: string }> }} put - roles to update to
    * @returns {Promise}
    */
   static putTenantUserRoles(tenantId, userId, put) {
-    return ApiService.call(`/tenants/${tenantId}/users/${userId}`, 'PUT', put);
+    return ApiService.call(`/tenants/${tenantId}/users/${userId}/roles`, 'PUT', put);
   }
 
   /**

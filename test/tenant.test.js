@@ -82,7 +82,7 @@ describe('Tenant module', () => {
     ));
 
   test('putTenantUserRoles calls ApiService', () =>
-    Tenant.putTenantUserRoles('1', '2', { roleNames: ['reader'] }).then(() =>
-      expect(ApiService.call).toBeCalledWith('/tenants/1/users/2', 'PUT', { roleNames: ['reader'] }),
+    Tenant.putTenantUserRoles('1', '2', { roles: [{ id: '123e4567-e89b-12d3-a456-426655440000' }] }).then(() =>
+      expect(ApiService.call).toBeCalledWith('/tenants/1/users/2/roles', 'PUT', { roles: [{id:'123e4567-e89b-12d3-a456-426655440000'}] }),
     ));
 });

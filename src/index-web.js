@@ -10,8 +10,9 @@ import Event from './modules/event';
 import Certificate from './modules/certificate';
 import DeviceType from './modules/deviceType';
 import Consumption from './modules/consumption';
+import Role from './modules/role';
 
-export { User, Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate, Consumption };
+export { User, Tenant, Client, Device, DeviceType, Timeseries, Event, Certificate, Consumption, Role };
 
 const AUTH_CALLBACK_DEFAULT_PATH = '/auth-callback';
 
