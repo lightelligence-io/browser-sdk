@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Pre-commit hooks
+
+# Check branch name
+
+regex="^(feat|fix|hotfix|chore|refactor|docs)_.+_OLT-[0-9]{4}$"
+
+BRANCH_NAME_LENGTH=`git rev-parse --abbrev-ref HEAD | grep -E $regex | wc -c`
+
+if [ ${BRANCH_NAME_LENGTH} -eq 0 ] ; then
+  echo -e "ERROR in branch-name hook: /scripts/branch-name"
+  echo "Branch name should match the pattern branchType_whatever_OLT-XXXX, where XXXX is the Jira ticket number"
+  echo "and branchType is one of: feat, fix, hotfix, chore, refactor, docs"
+  echo "Skip pre-commit hooks with --no-verify (not recommended)."
+  exit 1
+fi

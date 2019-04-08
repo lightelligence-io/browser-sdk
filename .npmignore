@@ -12,6 +12,7 @@
 /.npmrc
 /.nvmrc
 /docs-image.docker
+/scripts
 
 # Log files
 npm-debug.log*

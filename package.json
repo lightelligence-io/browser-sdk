@@ -14,7 +14,7 @@
     "transpile-esm": "BABEL_ENV=esm babel src -d dist/esm --copy-files",
     "transpile-cjs": "BABEL_ENV=cjs babel src -d dist/cjs --copy-files ",
     "license-report": "legally",
-    "precommit": "npm run lint && npm run test"
+    "precommit": "npm run lint && npm run test && sh scripts/branch-name "
   },
   "repository": {
     "type": "git",
