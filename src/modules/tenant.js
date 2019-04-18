@@ -71,7 +71,8 @@ export default class Tenant {
    * @param {string} tenantId
    * @param {Object} invite - the invite to be created.
    * @param {string} invite.receiverEmail - email of user to be invited
-   * @param {array<string>} invite.roleNames - Array of roles for user to be assigned to. Ex. ['admin']
+   * @param {array<string>} invite.roleNames - Deprecated: array of roles for user to be assigned to. Ex. ['admin']
+   * @param {array<{ id: string }>} invite.roles - Array of objects containing the role id for user to be assigned to. Ex. [{ id: '123e4567-e89b-12d3-a456-426655440000' }]
    * @returns {Promise}
    */
   static createInvite(tenantId, invite) {
