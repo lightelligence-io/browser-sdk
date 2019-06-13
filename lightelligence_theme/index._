@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title><%- config['project-name'] %> <%- config['project-version'] %> | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
+  <link href='assets/style.css' type='text/css' rel='stylesheet' />
+  <link href='assets/github.css' type='text/css' rel='stylesheet' />
+  <link href='assets/split.css' type='text/css' rel='stylesheet' />
+  <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body class='documentation m0'>
+    <div class='header'>
+           <div class='logo'></div>
+           <div class='app-name'><%- config['project-name'] %></div>
+          <div class='app-name'><code><%- config['project-version'] %></code></div>
+        </div>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+                <li><a href="#gettingstarted">
+                  Getting started
+                </a>
+                </li>
+              <% docs.forEach(function(doc) { %>
+                <% var hasMembers = doc.members.static.length || doc.members.instance.length %>
+                <li><a
+                  href='#<%=slug(doc.namespace)%>'
+                  class="<% if (doc.kind === 'note') { %>h5 bold black caps<% } %><% if (hasMembers) { %> toggle-sibling<% } %>">
+                  <%- doc.name %>
+                  <% if (hasMembers) { %><span class='icon'>▸</span><% } %>
+                </a>
+                <% if (hasMembers) { %>
+                <div class='toggle-target display-none'>
+                  <% if (doc.members.static && doc.members.static.length) { %>
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    <% doc.members.static.forEach(function(member) { %>
+                      <li><a
+                        href='#<%=slug(member.namespace)%>'
+                        class='regular pre-open'>
+                        .<%- member.name %>
+                      </a></li>
+                    <% }) %>
+                    </ul>
+                  <% } %>
+                  <% if (doc.members.instance && doc.members.instance.length) { %>
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      <% doc.members.instance.forEach(function(member) { %>
+                      <li><a
+                        href='#<%=slug(member.namespace)%>'
+                        class='regular pre-open'>
+                        #<%- member.name %>
+                      </a></li>
+                      <% }) %>
+                    </ul>
+                  <% } %>
+                  <% if (doc.members.inner && doc.members.inner.length) { %>
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Inner members</span></li>
+                      <% doc.members.inner.forEach(function(member) { %>
+                      <li><a
+                        href='#<%=slug(member.namespace)%>'
+                        class='regular pre-open'>
+                        #<%- member.name %>
+                      </a></li>
+                      <% }) %>
+                    </ul>
+                  <% } %>
+                  <% if (doc.members.events && doc.members.events.length) { %>
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'>Events</li>
+                      <% doc.members.events.forEach(function(member) { %>
+                        <li><a
+                          href='#<%=slug(member.namespace)%>'
+                          class='regular pre-open'>
+                          ⓔ <%- member.name %>
+                        </a></li>
+                      <% }) %>
+                    </ul>
+                  <% } %>
+                </div>
+                <% } %>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='http://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        <section class="p2 mb2 clearfix bg-white minishadow">
+        <h3 id="gettingstarted" class="fl m0" id="browsersdk"><a class="anchorjs-link " aria-label="Anchor link for: browsersdk" data-anchorjs-icon="" style="font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 1em; line-height: inherit; font-family: anchorjs-icons; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>
+          Getting started
+        </h3>
+        <p>To start using browser sdk you will need to install it via npm:</p>
+        <div class="pre p1 fill-light mt0">npm install <%- config['project-name'] %></div>
+        <p>and import it in your source code:</p>
+        <div class="pre p1 fill-light mt0">import BrowserSDK from '<%- config['project-name'] %>';</div>
+        <p>Then you will need to create an instance of sdk:</p>
+        <div class="pre p1 fill-light mt0">
+          const browserSDK = new BrowserSDK({<br/>
+            &nbsp;&nbsp;environment: 'preview',<br/> // you can change it to 'dev', 'int' or 'preview'
+            &nbsp;&nbsp;clientId: 'olt_sensor_dashboard',<br/>
+            &nbsp;&nbsp;scope: ['openid','profile','email','offline_access']<br/>
+          });
+        </div>
+        <p>Use login method will redirect user to login page redirects back upon successfull authorization:</p>
+        <div class="pre p1 fill-light mt0">
+          browserSDK.login();
+        </div>
+        <p>Now you can retrieve your logged in user by calling:</p>
+        <div class="pre p1 fill-light mt0">
+          browserSDK.getCurrentUser().then(user => console.log(user));
+        </div>
+        <p>From here you can start exploring other modules. Let's start with <a href="#device">Device module</a>.</p>
+        <p>Import <a href="#device">Device module</a></p>
+        <div class="pre p1 fill-light mt0">
+          <div class="pre p1 fill-light mt0">import BrowserSDK, {Device} from '<%- config['project-name'] %>';</div>
+        </div>
+        <p>Use getDevices method to get all devices</p>
+        <div class="pre p1 fill-light mt0">
+          <div class="pre p1 fill-light mt0">
+            Device.getDevices().then(devices => console.log(devices));
+          </div>
+        </div>
+        <p>Now you are ready to build your application. Explore available methods below.</p>
+        <p>NOTE: Ensure that your app is redirect all request to index.html file. The authorization would not work without it</p>
+        </section>
+        <% docs.forEach(function(s) { %>
+          <% if (s.kind === 'note') { %>
+            <div class='keyline-top-not py2'><%=renderNote({ note: s })%></div>
+          <% } %>
+          <%= renderSection({
+            section: s,
+            renderSection: renderSection,
+            renderSectionList: renderSectionList,
+            renderParamProperty: renderParamProperty
+          }) %>
+        <% }) %>
+      </div>
+    </div>
+  <script src='assets/anchor.js'></script>
+  <script src='assets/split.js'></script>
+  <script src='assets/site.js'></script>
+</body>
+</html>

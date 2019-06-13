@@ -1,0 +1,21 @@
+{
+  "env": {
+    "jest": true,
+    "browser": true
+  },
+  "extends": ["airbnb-base", "prettier"],
+  "rules": {
+    "require-jsdoc": [
+      "error",
+      {
+        "require": {
+          "FunctionDeclaration": true,
+          "MethodDefinition": false,
+          "ClassDeclaration": true,
+          "ArrowFunctionExpression": false,
+          "FunctionExpression": false
+        }
+      }
+    ]
+  }
+}

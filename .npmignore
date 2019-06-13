@@ -1,0 +1,16 @@
+/node_modules
+/lightelligence_theme
+/coverage
+/Dockerfile
+/docs
+/.eslintrc
+/babel.config.js
+/webpack.config.js
+/.prettierrc
+/.npmrc
+/.nvmrc
+/docs-image.docker
+/scripts
+
+# Log files
+npm-debug.log*
