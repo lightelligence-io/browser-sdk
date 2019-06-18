@@ -53,4 +53,28 @@ export default class DeviceType {
   static deleteDeviceType(deviceTypeId) {
     return ApiService.call(`/device-types/${deviceTypeId}`, 'DELETE');
   }
+
+  /**
+   * Get the online monitoring configuration for a device type
+   * @param {string} deviceTypeId
+   * @returns {Promise}
+   */
+  static getOnlineMonitoringRules(deviceTypeId) {
+    return ApiService.call(`/device-types/${deviceTypeId}/onlinemonitoring`);
+  }
+
+  /**
+   * Edit the online monitoring configuration for a device type
+   * @param {string} deviceTypeId
+   * @param {object} config changes to device
+   * @param {number|null} config.communicationInterval The expected communication interval in seconds. Special cases: **null** and **0** mean monitoring is disabled
+   * @returns {Promise}
+   */
+  static patchOnlineMonitoringRules(deviceTypeId, config) {
+    return ApiService.call(
+      `/device-types/${deviceTypeId}/onlinemonitoring`,
+      'PATCH',
+      config
+    );
+  }
 }

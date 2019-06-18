@@ -83,4 +83,22 @@ describe('Device module', () => {
         deviceId: '1',
       })
     ));
+
+  test('getOnlineMonitoringRules calls ApiService', () =>
+    Device.getOnlineMonitoringRules('1').then(() =>
+      expect(ApiService.call).toBeCalledWith('/devices/1/onlinemonitoring')
+    ));
+
+  test('patchOnlineMonitoringRules calls ApiService', () =>
+    Device.patchOnlineMonitoringRules('1', {
+      communicationInterval: 100,
+    }).then(() =>
+      expect(ApiService.call).toBeCalledWith(
+        '/devices/1/onlinemonitoring',
+        'PATCH',
+        {
+          communicationInterval: 100,
+        }
+      )
+    ));
 });
