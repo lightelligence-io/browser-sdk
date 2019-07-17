@@ -6,7 +6,6 @@
   "scripts": {
     "start": "webpack --config webpack.config.js --watch true",
     "test": "jest --coverage",
-    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "eslint src/** test/** --max-warnings 0 && prettier --c \"{src,test}/**/*.js\"",
     "lint:fix": "eslint --fix src/** test/** --max-warnings 0 && prettier --write -c \"{src,test}/**/*.js\"",
     "version": "node -pe \"process.env.BITBUCKET_TAG || process.env.BITBUCKET_COMMIT || 'current'\"",
@@ -22,7 +21,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && sh scripts/branch-name"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
@@ -56,7 +55,6 @@
     "audit-ci": "^2.0.1",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
-    "coveralls": "^3.0.4",
     "documentation": "^8.0.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
