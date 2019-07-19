@@ -16,9 +16,12 @@
     "transpile-cjs": "BABEL_ENV=cjs babel src -d dist/cjs --copy-files ",
     "license-report": "legally"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && sh scripts/branch-name"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
@@ -49,6 +52,7 @@
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
     "@babel/runtime": "^7.2.0",
+    "audit-ci": "^2.0.1",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
     "documentation": "^8.0.2",

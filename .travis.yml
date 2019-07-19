@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - 'lts/*'
+cache: npm
+script:
+  - audit-ci --moderate
+  - npm run license-report
+  - npm run build
+  - npm run lint
+  - npm run test
+deploy:
+  provider: npm
+  email: 'support@lightelligence.io'
+  api_key: $NPM_TOKEN_PUBLISH
+  skip_cleanup: true
+  on:
+    tags: true
+    branch: master
+    repo: lightelligence-io/browser-sdk
