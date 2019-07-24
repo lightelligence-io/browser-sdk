@@ -49,6 +49,6 @@ browserSDK.getCurrentUser().then(user => {
 You can check [the API reference](https://lightelligence-io.github.io/browser-sdk/) 
 for the full documentation.
 
-## LICENCE
+## License
 
 MIT
