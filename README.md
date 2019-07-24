@@ -1,61 +1,53 @@
-# browser-sdk
+<a href="https://lightelligence.io" align="right">
+    <img src="/resources/logo.png" alt="logo" title="logo" align="right" />
+</a>
 
-[User documentation](https://developers.lightelligence.io/browser-sdk/)
+# BrowserSDK
 
-Provides tools to make app development with lightelligence platform faster and easier.
-Contains of authorization for node and browser environments, wrappers around all api
-endpoints, util methods.
+[![Build Status](https://img.shields.io/travis/com/lightelligence-io/browser-sdk.svg)](https://travis-ci.com/lightelligence-io/browser-sdk/branches)
+[![Code Coverage](https://img.shields.io/coveralls/github/lightelligence-io/browser-sdk.svg)](https://coveralls.io/github/lightelligence-io/browser-sdk)
+[![Dependencies](https://img.shields.io/david/lightelligence-io/browser-sdk.svg)](https://david-dm.org/lightelligence-io/browser-sdk)
+[![npm (scoped)](https://img.shields.io/npm/v/@lightelligence/browser-sdk.svg)](https://www.npmjs.com/package/@lightelligence/browser-sdk)
 
-## Dependencies
+> Lightelligence Browser API client 
 
-- [oidc-client](https://github.com/IdentityModel/oidc-client-js) Library to provide OpenID Connect (OIDC) and OAuth2 protocol support for client-side, browser-based JavaScript client applications
-
-## Technologies
-
-- ECMAScript 2018
-- Webpack
-- Jest
-- JSDoc
-
-## Development Kickstart
-
-### Install dependencies
-
-```
-npm install
-```
-
-### Run build in watch mode
-
-```
-npm run start
-```
-
-### Build library
-
-```
-npm run build
-```
-
-### Build documentation
-
-available under `docs/index.html`
-
-```
-npm run build:docs
-```
-
-## Deployment
-
-Library is published to npm via pipeline.
-
-## Access
+## Installation
 
 ```
 npm install @lightelligence/browser-sdk
 ```
 
-TODO: link to npm package
+## Features
+
+The BrowserSDK allows you to access most of the Lightelligence API end-points as well as
+user authentication flow for your client side application.
+
+## Usage
+
+In order to properly authenticate with the BrowserSDK you will need to create an 
+application via our [Lightelligence portal](https://portal.lightelligence.io/developer)
+and obtain a Public Client ID.
+
+```js
+import BrowserSDK, { Device } from '@lightelligence/browser-sdk';
+
+const browserSDK = new BrowserSDK({
+  environment: 'prod', 
+  clientId: '', // Your ClientID from the Lightelligence platform
+});
+
+browserSDK.getCurrentUser().then(user => {
+
+  if ( !user ) { return browserSDK.login(); }
+  
+  // Will print all devices of the tenant
+  Device.getDevices().then( devices => console.log( devices ) );
+  
+} )
+```
+
+You can check [the API reference](https://lightelligence-io.github.io/browser-sdk/) 
+for the full documentation.
 
 ## LICENCE
 
