@@ -1,4 +1,4 @@
-import { UserManager } from 'oidc-client';
+import UserManager from './oidc/UserManager';
 import userManagerProvider from './tools/userManagerProvider';
 import environmentProvider from './tools/environmentProvider';
 import User from './modules/user';
@@ -104,6 +104,13 @@ export default class BrowserSDK {
    */
   changeTenant() {
     this.manager.signinRedirect();
+  }
+
+  /**
+   * Selects a specific tenant
+   */
+  async selectTennat(tenantId) {
+    return this.manager.changeTenant(tenantId);
   }
 
   /**
