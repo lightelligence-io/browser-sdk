@@ -9,7 +9,7 @@
     "lint": "eslint src/** test/** --max-warnings 0 && prettier --c \"{src,test}/**/*.js\"",
     "lint:fix": "eslint --fix src/** test/** --max-warnings 0 && prettier --write -c \"{src,test}/**/*.js\"",
     "version": "node -pe \"process.env.BITBUCKET_TAG || process.env.BITBUCKET_COMMIT || 'current'\"",
-    "build:docs": "documentation build src/** -f html -o docs --theme lightelligence_theme --project-version $(npm run -s version)",
+    "build:docs": "documentation build src/** -f html -o docs --theme lightelligence_theme --project-version $(npm run -s version) && touch ./docs/.nojekyll",
     "build": "rm -rf dist && npm run transpile-umd && npm run transpile-esm && npm run transpile-cjs",
     "transpile-umd": "webpack --config webpack.config.js",
     "transpile-esm": "BABEL_ENV=esm babel src -d dist/esm --copy-files",
