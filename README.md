@@ -9,7 +9,7 @@
 [![Dependencies](https://img.shields.io/david/lightelligence-io/browser-sdk.svg)](https://david-dm.org/lightelligence-io/browser-sdk)
 [![npm (scoped)](https://img.shields.io/npm/v/@lightelligence/browser-sdk.svg)](https://www.npmjs.com/package/@lightelligence/browser-sdk)
 
-> Lightelligence Browser API client 
+> The Lightelligence API JavaScript Client for the Browser
 
 ## Installation
 
@@ -19,21 +19,21 @@ npm install @lightelligence/browser-sdk
 
 ## Features
 
-The BrowserSDK allows you to access most of the Lightelligence API end-points as well as
+The BrowserSDK allows you to access most of the Lightelligence API end-points and manages the
 user authentication flow for your client side application.
 
 ## Usage
 
-In order to properly authenticate with the BrowserSDK you will need to create an 
+In order to authenticate with the BrowserSDK you will need to create an 
 application via our [Lightelligence portal](https://portal.lightelligence.io/developer)
-and obtain a Public Client ID.
+and obtain a public client ID.
 
 ```js
 import BrowserSDK, { Device } from '@lightelligence/browser-sdk';
 
 const browserSDK = new BrowserSDK({
-  environment: 'prod', 
-  clientId: '', // Your ClientID from the Lightelligence platform
+  environment: 'prod', // Target enviroment (either `dev`, `preview` or `prod`)
+  clientId: '', // The public client ID of the application your created in our [Lightelligence portal](https://portal.lightelligence.io/developer)
 });
 
 browserSDK.getCurrentUser().then(user => {
@@ -46,8 +46,8 @@ browserSDK.getCurrentUser().then(user => {
 } )
 ```
 
-You can check [the API reference](https://lightelligence-io.github.io/browser-sdk/) 
-for the full documentation.
+Check out [the API reference](https://lightelligence-io.github.io/browser-sdk/) 
+to see the full documentation.
 
 ## License
 
