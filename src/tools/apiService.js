@@ -3,9 +3,7 @@ import environmentProvider from './environmentProvider';
 
 const addErrorMessageIfMissing = response => {
   if (!response.errorMessage && response.httpStatusCode >= 400) {
-    const errorMessage = `Unknown Error occurred. Please try again later. Error Code: ${
-      response.httpStatusCode
-    }`;
+    const errorMessage = `Unknown Error occurred. Please try again later. Error Code: ${response.httpStatusCode}`;
     return {
       ...response,
       errorMessage,

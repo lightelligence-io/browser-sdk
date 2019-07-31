@@ -84,4 +84,23 @@ describe('browser module', () => {
       });
     });
   });
+
+  describe('changeTenant', () => {
+    it('should call signInRedirect if no tenantId is provided', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
+      sdk.manager.signinRedirect = jest.fn().mockResolvedValue(true);
+      return sdk.changeTenant().then(response => {
+        expect(response).toEqual(true);
+      });
+    });
+
+    it('should call changeTenant if no tenantId is provided', () => {
+      const sdk = new BrowserSDK({ environment: 'int', clientId: 'abcdefg' });
+      sdk.manager.changeTenant = jest.fn().mockResolvedValue(true);
+      return sdk.changeTenant('foo').then(response => {
+        expect(response).toEqual(true);
+        expect(sdk.manager.changeTenant.mock.calls[0][0]).toEqual('foo');
+      });
+    });
+  });
 });
