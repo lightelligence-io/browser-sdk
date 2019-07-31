@@ -18,6 +18,11 @@ describe('DeviceType module', () => {
       })
     ));
 
+  test('getUsedCategories calls ApiService', () =>
+    DeviceType.getUsedCategories().then(() =>
+      expect(ApiService.call).toBeCalledWith('/device-types/categories')
+    ));
+
   test('getDeviceTypes calls ApiService', () =>
     DeviceType.getDeviceTypes().then(() =>
       expect(ApiService.call).toBeCalledWith('/device-types?')

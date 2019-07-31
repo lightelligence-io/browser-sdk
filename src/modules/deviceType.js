@@ -27,6 +27,14 @@ export default class DeviceType {
   }
 
   /**
+   * Returns a list of semantic categories used in your device types.
+   * @returns {Promise}
+   */
+  static getUsedCategories() {
+    return ApiService.call(`/device-types/categories`);
+  }
+
+  /**
    * Get a specific device-type by id
    * @param {string} deviceTypeId
    * @returns {Promise}
