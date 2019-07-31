@@ -99,18 +99,17 @@ export default class BrowserSDK {
   }
 
   /**
-   * Redirects to the tenant selection page if the user is already logged in.
-   * Otherwise it redirects to the keycloak login page.
+   * Changes a tenant
+   *
+   * In case there is no tenantId provided, it will either redirect to the
+   * tenant selection page or to the oAuth login page.
+   *
+   * @param {string} [tenantId]  The tenant id that the user wants to change to
    */
-  changeTenant() {
-    this.manager.signinRedirect();
-  }
-
-  /**
-   * Selects a specific tenant
-   */
-  async selectTennat(tenantId) {
-    return this.manager.changeTenant(tenantId);
+  changeTenant(tenantId) {
+    return tenantId
+      ? this.manager.changeTenant(tenantId)
+      : this.manager.signinRedirect();
   }
 
   /**
