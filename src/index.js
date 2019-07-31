@@ -1,4 +1,4 @@
-import { UserManager } from 'oidc-client';
+import UserManager from './oidc/UserManager';
 import userManagerProvider from './tools/userManagerProvider';
 import environmentProvider from './tools/environmentProvider';
 import User from './modules/user';
@@ -99,11 +99,17 @@ export default class BrowserSDK {
   }
 
   /**
-   * Redirects to the tenant selection page if the user is already logged in.
-   * Otherwise it redirects to the keycloak login page.
+   * Changes a tenant
+   *
+   * In case there is no tenantId provided, it will either redirect to the
+   * tenant selection page or to the oAuth login page.
+   *
+   * @param {string} [tenantId]  The tenant id that the user wants to change to
    */
-  changeTenant() {
-    this.manager.signinRedirect();
+  changeTenant(tenantId) {
+    return tenantId
+      ? this.manager.changeTenant(tenantId)
+      : this.manager.signinRedirect();
   }
 
   /**
