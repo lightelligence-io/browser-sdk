@@ -53,4 +53,22 @@ describe('DeviceType module', () => {
     DeviceType.deleteDeviceType('1').then(() =>
       expect(ApiService.call).toBeCalledWith('/device-types/1', 'DELETE')
     ));
+
+  test('getOnlineMonitoringRules calls ApiService', () =>
+    DeviceType.getOnlineMonitoringRules('1').then(() =>
+      expect(ApiService.call).toBeCalledWith('/device-types/1/onlinemonitoring')
+    ));
+
+  test('patchOnlineMonitoringRules calls ApiService', () =>
+    DeviceType.patchOnlineMonitoringRules('1', {
+      communicationInterval: 100,
+    }).then(() =>
+      expect(ApiService.call).toBeCalledWith(
+        '/device-types/1/onlinemonitoring',
+        'PATCH',
+        {
+          communicationInterval: 100,
+        }
+      )
+    ));
 });

@@ -102,4 +102,28 @@ export default class Device {
     const post = { ...data, deviceId };
     return ApiService.call('/data-ingest', 'POST', post);
   }
+
+  /**
+   * Get the online monitoring configuration for a device
+   * @param {string} deviceId
+   * @returns {Promise}
+   */
+  static getOnlineMonitoringRules(deviceId) {
+    return ApiService.call(`/devices/${deviceId}/onlinemonitoring`);
+  }
+
+  /**
+   * Edit the online monitoring configuration for a device
+   * @param {string} deviceId
+   * @param {object} config changes to device
+   * @param {number|null} config.communicationInterval The expected communication interval in seconds. Special cases: **0** means monitoring is disabled, **null** means inherit from device type
+   * @returns {Promise}
+   */
+  static patchOnlineMonitoringRules(deviceId, config) {
+    return ApiService.call(
+      `/devices/${deviceId}/onlinemonitoring`,
+      'PATCH',
+      config
+    );
+  }
 }

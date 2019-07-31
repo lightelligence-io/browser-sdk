@@ -1,6 +1,6 @@
 {
   "name": "@lightelligence/browser-sdk",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "javascript SDK for the lightelligence-platform",
   "main": "src/index.js",
   "scripts": {
@@ -9,12 +9,16 @@
     "lint": "eslint src/** test/** --max-warnings 0 && prettier --c \"{src,test}/**/*.js\"",
     "lint:fix": "eslint --fix src/** test/** --max-warnings 0 && prettier --write -c \"{src,test}/**/*.js\"",
     "version": "node -pe \"process.env.BITBUCKET_TAG || process.env.BITBUCKET_COMMIT || 'current'\"",
-    "build:docs": "documentation build src/** -f html -o docs --theme lightelligence_theme --project-version $(npm run -s version)",
+    "build:docs": "documentation build src/** -f html -o docs --theme lightelligence_theme --project-version $(npm run -s version) && touch ./docs/.nojekyll",
     "build": "rm -rf dist && npm run transpile-umd && npm run transpile-esm && npm run transpile-cjs",
+    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "transpile-umd": "webpack --config webpack.config.js",
     "transpile-esm": "BABEL_ENV=esm babel src -d dist/esm --copy-files",
     "transpile-cjs": "BABEL_ENV=cjs babel src -d dist/cjs --copy-files ",
     "license-report": "legally"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "husky": {
     "hooks": {
@@ -49,8 +53,10 @@
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
     "@babel/runtime": "^7.2.0",
+    "audit-ci": "^2.0.1",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
+    "coveralls": "^3.0.5",
     "documentation": "^8.0.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
