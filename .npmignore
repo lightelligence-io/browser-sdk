@@ -1,7 +1,6 @@
 /node_modules
 /lightelligence_theme
 /coverage
-/Dockerfile
 /docs
 /.eslintrc
 /babel.config.js
@@ -9,7 +8,9 @@
 /.prettierrc
 /.npmrc
 /.nvmrc
-/docs-image.docker
+/ressources
+.travis.yml
+/scripts
 
 # Log files
 npm-debug.log*

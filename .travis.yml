@@ -3,22 +3,34 @@ node_js:
   - 'lts/*'
 cache: npm
 script:
-  - audit-ci --moderate
+  - audit-ci --config ./audit-ci.json --moderate
   - npm run license-report
-  - npm run build
   - npm run lint
+  - npm run build
   - npm run test
-  - npm run coveralls
   - npm run build:docs
+  - npm run coveralls
+
+before_deploy:
+  - source ./scripts/tag-commit.sh
+
 deploy:
+  - provider: releases
+    api_key: $GITHUB_ACCESS_TOKEN
+    tag_name: $TRAVIS_TAG
+    on:
+      branch: master
+      repo: lightelligence-io/browser-sdk
+      condition: '$TRAVIS_COMMIT_MESSAGE =~ ^release*'
+
   - provider: npm
     email: 'support@lightelligence.io'
     api_key: $NPM_TOKEN_PUBLISH
     skip_cleanup: true
     on:
-      tags: true
       branch: master
       repo: lightelligence-io/browser-sdk
+      condition: '$TRAVIS_COMMIT_MESSAGE =~ ^release*'
 
   - provider: pages
     local_dir: docs
