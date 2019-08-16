@@ -26,13 +26,53 @@ describe('Application module', () => {
     );
   });
 
+  test('getPermissions calls ApiService', () => {
+    const applicationId = 'fakeId';
+    return Application.getPermissions(applicationId).then(() =>
+      expect(ApiService.call).toBeCalledWith(
+        `/applications/${applicationId}/permissions`
+      )
+    );
+  });
+
   test('installApplication calls ApiService', () => {
     const applicationId = 'fakeId';
-    return Application.installApplication(applicationId).then(() =>
+    const data = {
+      permissions: {
+        client: [{ id: 'permissionId1' }, { id: 'permissionId2' }],
+        user: [{ id: 'permissionId2' }, { id: 'permissionId3' }],
+      },
+    };
+    return Application.installApplication(applicationId, data).then(() =>
       expect(ApiService.call).toBeCalledWith(
         `/applications/${applicationId}/installation`,
-        'PUT'
+        'POST',
+        data
       )
+    );
+  });
+
+  test('updateInstallation calls ApiService', () => {
+    const applicationId = 'fakeId';
+    const data = {
+      permissions: {
+        client: [{ id: 'permissionId1' }, { id: 'permissionId2' }],
+        user: [{ id: 'permissionId2' }, { id: 'permissionId3' }],
+      },
+    };
+    return Application.updateInstallation(applicationId, data).then(() =>
+      expect(ApiService.call).toBeCalledWith(
+        `/applications/${applicationId}/installation`,
+        'PATCH',
+        data
+      )
+    );
+  });
+
+  test('getInstallationDetails calls ApiService', () => {
+    const applicationId = 'fakeId';
+    return Application.getInstallationDetails(applicationId).then(() =>
+      expect(ApiService.call).toBeCalledWith(`/applications/${applicationId}/installation`)
     );
   });
 
