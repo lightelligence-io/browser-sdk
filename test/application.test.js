@@ -72,7 +72,9 @@ describe('Application module', () => {
   test('getInstallationDetails calls ApiService', () => {
     const applicationId = 'fakeId';
     return Application.getInstallationDetails(applicationId).then(() =>
-      expect(ApiService.call).toBeCalledWith(`/applications/${applicationId}/installation`)
+      expect(ApiService.call).toBeCalledWith(
+        `/applications/${applicationId}/installation`
+      )
     );
   });
 
