@@ -27,15 +27,55 @@ export default class Application {
   }
 
   /**
-   * Install an available application
+   * Get permissions required by an application
    * @param {string} applicationId The application ID
    * @returns {Promise}
    */
-  static installApplication(applicationId) {
+  static getPermissions(applicationId) {
+    return ApiService.call(`/applications/${applicationId}/permissions`);
+  }
+
+  /**
+   * Install an available application
+   * @param {string} applicationId The application ID
+   * @param {object} data Application data
+   * @param {object} [data.permissions] Application permissions
+   * @param {{ id: string }[]} [data.permissions.client] Application client permissions
+   * @param {{ id: string }[]} [data.permissions.user] Application client permissions
+   * @returns {Promise}
+   */
+  static installApplication(applicationId, data = {}) {
     return ApiService.call(
       `/applications/${applicationId}/installation`,
-      'PUT'
+      'POST',
+      data
     );
+  }
+
+  /**
+   * Updates and re-consents an installation
+   * @param {string} applicationId The application ID
+   * @param {object} data Application data
+   * @param {object} [data.permissions] Application permissions
+   * @param {{ id: string }[]} [data.permissions.client] Application client permissions
+   * @param {{ id: string }[]} [data.permissions.user] Application client permissions
+   * @returns {Promise}
+   */
+  static updateInstallation(applicationId, data) {
+    return ApiService.call(
+      `/applications/${applicationId}/installation`,
+      'PATCH',
+      data
+    );
+  }
+
+  /**
+   * Get detailed information for an application installation
+   * @param {string} applicationId The application ID
+   * @returns {Promise}
+   */
+  static getInstallationDetails(applicationId) {
+    return ApiService.call(`/applications/${applicationId}/installation`);
   }
 
   /**
