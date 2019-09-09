@@ -51,7 +51,7 @@ export default class User {
   }
 
   /**
-   * Get the user's permissions within the current tenant
+   * Get a user's permissions within the current tenant
    * @param {string} userId
    * @returns {Promise}
    */

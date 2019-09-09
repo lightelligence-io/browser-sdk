@@ -120,15 +120,6 @@ export default class Tenant {
   }
 
   /**
-   * Gets user permissions
-   * @param {string} userId
-   * @returns {Promise}
-   */
-  static getTenantUserPermissions(userId) {
-    return ApiService.call(`/users/${userId}/permissions`);
-  }
-
-  /**
    * Update roles of user for tenant
    * - roleNames will replace the current roles.
    * @param {string} tenantId
