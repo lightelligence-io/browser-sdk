@@ -94,11 +94,6 @@ describe('Tenant module', () => {
       expect(ApiService.call).toBeCalledWith('/tenants/1/roles')
     ));
 
-  test('getTenantUserPermissions calls ApiService', () =>
-    Tenant.getTenantUserPermissions('1').then(() =>
-      expect(ApiService.call).toBeCalledWith('/users/1/permissions')
-    ));
-
   test('putTenantUserRoles calls ApiService', () =>
     Tenant.putTenantUserRoles('1', '2', {
       roles: [{ id: '123e4567-e89b-12d3-a456-426655440000' }],

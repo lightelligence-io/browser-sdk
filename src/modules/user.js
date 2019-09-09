@@ -49,4 +49,13 @@ export default class User {
       status: 'declined',
     });
   }
+
+  /**
+   * Get the user's permissions within the current tenant
+   * @param {string} userId
+   * @returns {Promise}
+   */
+  static getUserPermissions(userId) {
+    return ApiService.call(`/users/${userId}/permissions`);
+  }
 }
