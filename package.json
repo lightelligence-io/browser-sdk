@@ -1,6 +1,6 @@
 {
   "name": "@lightelligence/browser-sdk",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "javascript SDK for the lightelligence-platform",
   "main": "src/index.js",
   "scripts": {
