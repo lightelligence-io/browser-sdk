@@ -121,12 +121,11 @@ export default class Tenant {
 
   /**
    * Gets user permissions for specified tenant
-   * @param {string} tenantId
    * @param {string} userId
    * @returns {Promise}
    */
-  static getTenantUserPermissions(tenantId, userId) {
-    return ApiService.call(`/tenants/${tenantId}/users/${userId}/permissions`);
+  static getTenantUserPermissions(userId) {
+    return ApiService.call(`/users/${userId}/permissions`);
   }
 
   /**
