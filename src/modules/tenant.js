@@ -120,7 +120,7 @@ export default class Tenant {
   }
 
   /**
-   * Gets user permissions for specified tenant
+   * Gets user permissions
    * @param {string} userId
    * @returns {Promise}
    */
