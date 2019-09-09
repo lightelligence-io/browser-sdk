@@ -39,4 +39,9 @@ describe('Tenant module', () => {
         status: 'declined',
       })
     ));
+
+  test('getUserPermissions calls ApiService', () =>
+    User.getUserPermissions('1').then(() =>
+      expect(ApiService.call).toBeCalledWith('/users/1/permissions')
+    ));
 });
