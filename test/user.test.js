@@ -11,6 +11,11 @@ describe('Tenant module', () => {
       expect(ApiService.call).toBeCalledWith('/users/1')
     ));
 
+  test('getUserTenant calls ApiService', () =>
+    User.getUserTenant('1', '2').then(() =>
+      expect(ApiService.call).toBeCalledWith('/users/1/tenants/2')
+    ));
+
   test('getUserInvites calls ApiService', () =>
     User.getUserInvites('1').then(() =>
       expect(ApiService.call).toBeCalledWith('/users/1/invites?')

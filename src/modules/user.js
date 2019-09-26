@@ -14,6 +14,16 @@ export default class User {
   }
 
   /**
+   * Gets user tenant information
+   * @param {string} userId
+   * @param {string} tenantId
+   * @returns {Promise}
+   */
+  static getUserTenant(userId, tenantId) {
+    return ApiService.call(`/users/${userId}/tenants/${tenantId}`);
+  }
+
+  /**
    * Gets user invites
    * @param {string} userId
    * @param {object} params search params
