@@ -57,7 +57,7 @@
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
     "coveralls": "^3.0.5",
-    "documentation": "^8.0.2",
+    "documentation": "^14.0.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-config-prettier": "^2.9.0",
